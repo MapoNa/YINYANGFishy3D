@@ -4,33 +4,33 @@ using UnityEngine.UI;
 
 public class FishController : MonoBehaviour
 {
-    public int CollectedItemCount = 0; // 收集物品计数
+    public int CollectedItemCount = 0; // 脢脮录炉脦茂脝路录脝脢媒
     [SerializeField] float MoveSpeed;
-    public float maxDistance = 1.44f; // 绳索的最大距离
-    public float pullForce = 1f; // 给父物体施加的力大小
-    private GameObject grabbedBall; // 当前咬住的球
-    public float obstacleDetectionDistance = 1f; // 障碍物检测距离
-    public string obstacleTag = "Wall"; // 阻止移动的障碍物标签
-    public bool isBlocked = false; // 表示玩家是否被阻挡
+    public float maxDistance = 1.44f; // 脡镁脣梅碌脛脳卯麓贸戮脿脌毛
+    public float pullForce = 1f; // 赂酶赂赂脦茂脤氓脢漏录脫碌脛脕娄麓贸脨隆
+    private GameObject grabbedBall; // 碌卤脟掳脪搂脳隆碌脛脟貌
+    public float obstacleDetectionDistance = 1f; // 脮脧掳颅脦茂录矛虏芒戮脿脌毛
+    public string obstacleTag = "Wall"; // 脳猫脰鹿脪脝露炉碌脛脮脧掳颅脦茂卤锚脟漏
+    public bool isBlocked = false; // 卤铆脢戮脥忙录脪脢脟路帽卤禄脳猫碌虏
     public Slider yinYangSlider;
 
     public float speed = 5f;
     public float rotationSpeed = 100f;
-    private float originalSpeed; // 保存默认速度值
+    private float originalSpeed; // 卤拢麓忙脛卢脠脧脣脵露脠脰碌
 
-    public Light mainLight; // 场景中的主光源
-    public LayerMask shadowCastingLayers; // 用于检测阴影的图层
-    public bool isInShadow = false; // 当前是否在阴影中
-    public bool KeepY = true;// 保持y的位置
-    public float yinYangValue = 0f;  // 阴阳值：范围 -1 到 1
-    public float size = 1f;         // 鱼的体型
-    public float shrinkRate = 0.1f; // 溢出时缩小的速率
+    public Light mainLight; // 鲁隆戮掳脰脨碌脛脰梅鹿芒脭麓
+    public LayerMask shadowCastingLayers; // 脫脙脫脷录矛虏芒脪玫脫掳碌脛脥录虏茫
+    public bool isInShadow = false; // 碌卤脟掳脢脟路帽脭脷脪玫脫掳脰脨
+    public bool KeepY = true;// 卤拢鲁脰y碌脛脦禄脰脙
+    public float yinYangValue = 0f;  // 脪玫脩么脰碌拢潞路露脦搂 -1 碌陆 1
+    public float size = 1f;         // 脫茫碌脛脤氓脨脥
+    public float shrinkRate = 0.1f; // 脪莽鲁枚脢卤脣玫脨隆碌脛脣脵脗脢
 
-    public Material fishMaterial;  // 玩家鱼的材质
+    public Material fishMaterial;  // 脥忙录脪脫茫碌脛虏脛脰脢
 
-    // 阴阳颜色
-    public Color yinColor = Color.black; // 阴影代表的颜色（黑色）
-    public Color yangColor = Color.white;  // 阳光代表的颜色（红色）
+    // 脪玫脩么脩脮脡芦
+    public Color yinColor = Color.black; // 脪玫脫掳麓煤卤铆碌脛脩脮脡芦拢篓潞脷脡芦拢漏
+    public Color yangColor = Color.white;  // 脩么鹿芒麓煤卤铆碌脛脩脮脡芦拢篓潞矛脡芦拢漏
 
     private Rigidbody rb;
     public ParticleSystem splashEffect;
@@ -58,16 +58,16 @@ public class FishController : MonoBehaviour
     private float currentFallSpeed;
 
     //Eat
-    public float growthFactor = 0.1f;        // 鱼每次变大的量
-    public float foodShrinkFactor = 0.5f;   // 食物每次变小的量
-    public float eatCooldown = 0.3f;        // 每次进入 IsEating 状态的间隔时间
-    public string foodTag = "FishFood";     // 食物的标签
+    public float growthFactor = 0.1f;        // 脫茫脙驴麓脦卤盲麓贸碌脛脕驴
+    public float foodShrinkFactor = 0.5f;   // 脢鲁脦茂脙驴麓脦卤盲脨隆碌脛脕驴
+    public float eatCooldown = 0.3f;        // 脙驴麓脦陆酶脠毛 IsEating 脳麓脤卢碌脛录盲赂么脢卤录盲
+    public string foodTag = "FishFood";     // 脢鲁脦茂碌脛卤锚脟漏
 
-    public float shrinkSpeed = 0.001f; // 减小体型的速度
-    public float minScale = 0.5f; // 最小体型限制
+    public float shrinkSpeed = 0.001f; // 录玫脨隆脤氓脨脥碌脛脣脵露脠
+    public float minScale = 0.5f; // 脳卯脨隆脤氓脨脥脧脼脰脝
 
-    private bool isEating = false;          // 是否在吃食物
-    private bool canEat = true;             // 是否可以进入 IsEating 状态
+    private bool isEating = false;          // 脢脟路帽脭脷鲁脭脢鲁脦茂
+    private bool canEat = true;             // 脢脟路帽驴脡脪脭陆酶脠毛 IsEating 脳麓脤卢
     private void FixedUpdate()
     {
         HandleSplashEffect();
@@ -76,7 +76,7 @@ public class FishController : MonoBehaviour
         HandleFishJump();
         //rb.AddForce(new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")) * MoveSpeed);
         //rb.velocity = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")) * MoveSpeed;
-        // 找到 "RedBall"
+        // 脮脪碌陆 "RedBall"
 
     }
 
@@ -84,25 +84,25 @@ public class FishController : MonoBehaviour
 
 
 
-    /// 根据阴阳值动态更新鱼的颜色
+    /// 赂霉戮脻脪玫脩么脰碌露炉脤卢赂眉脨脗脫茫碌脛脩脮脡芦
     /// </summary>
-    public float flashSpeed = 2f; // 闪烁速度
+    public float flashSpeed = 2f; // 脡脕脣赂脣脵露脠
 
     public void UpdateFishColor()
     {
-        // 判断阴阳值是否过高或过低
+        // 脜脨露脧脪玫脩么脰碌脢脟路帽鹿媒赂脽禄貌鹿媒碌脥
         if (Mathf.Abs(yinYangValue) >= 1f)
         {
-            // 保存当前颜色
+            // 卤拢麓忙碌卤脟掳脩脮脡芦
             Color currentBaseColor = Color.Lerp(yangColor, yinColor, (yinYangValue + 1f) / 2f);
 
-            // 使用PingPong让颜色在当前颜色与红色之间闪烁
+            // 脢鹿脫脙PingPong脠脙脩脮脡芦脭脷碌卤脟掳脩脮脡芦脫毛潞矛脡芦脰庐录盲脡脕脣赂
             float t = Mathf.PingPong(Time.time * flashSpeed, 1f);
             fishMaterial.color = Color.Lerp(currentBaseColor, Color.red, t);
         }
         else
         {
-            // 正常更新颜色（不闪烁）
+            // 脮媒鲁拢赂眉脨脗脩脮脡芦拢篓虏禄脡脕脣赂拢漏
             Color currentColor = Color.Lerp(yangColor, yinColor, (yinYangValue + 1f) / 2f);
             fishMaterial.color = currentColor;
         }
@@ -117,7 +117,7 @@ public class FishController : MonoBehaviour
         originalSpeed = speed;
         if (mainLight == null)
         {
-            // 自动查找主光源
+            // 脳脭露炉虏茅脮脪脰梅鹿芒脭麓
             mainLight = FindObjectOfType<Light>();
             if (mainLight == null)
             {
@@ -132,17 +132,17 @@ public class FishController : MonoBehaviour
         transform.position = new Vector3(transform.position.x, defaultYPosition, transform.position.z);
     }
     /// <summary>
-    /// 进入 IsEating 状态
+    /// 陆酶脠毛 IsEating 脳麓脤卢
     /// </summary>
     private void EnterIsEatingState()
     {
         if (canEat)
         {
             isEating = true;
-            StartCoroutine(EatCooldown()); // 开始冷却计时
+            StartCoroutine(EatCooldown()); // 驴陋脢录脌盲脠麓录脝脢卤
         }
     }
-    // 定义一个 LayerMask，排除 FishModel 图层
+    // 露篓脪氓脪禄赂枚 LayerMask拢卢脜脜鲁媒 FishModel 脥录虏茫
 
 
 
@@ -151,7 +151,7 @@ public class FishController : MonoBehaviour
         Vector3 lightDirection = -mainLight.transform.forward;
         Ray ray = new Ray(transform.position, lightDirection);
 
-        // 排除 FishModel 层进行射线检测
+        // 脜脜鲁媒 FishModel 虏茫陆酶脨脨脡盲脧脽录矛虏芒
         if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, shadowCastingLayers))
         {
             if (hit.collider.gameObject.layer != LayerMask.NameToLayer("FishModel"))
@@ -167,27 +167,27 @@ public class FishController : MonoBehaviour
 
 
     /// <summary>
-    /// 松开左键时触发吃食物逻辑
+    /// 脣脡驴陋脳贸录眉脢卤麓楼路垄鲁脭脢鲁脦茂脗脽录颅
     /// </summary>
     private void TriggerEatFood()
     {
         if (isEating)
         {
-            isEating = false; // 停止吃的状态
+            isEating = false; // 脥拢脰鹿鲁脭碌脛脳麓脤卢
 
-            // 查找附近的物体
-            Collider[] nearbyObjects = Physics.OverlapSphere(transform.position, 1f); // 1f 为检测半径，可调整
+            // 虏茅脮脪赂陆陆眉碌脛脦茂脤氓
+            Collider[] nearbyObjects = Physics.OverlapSphere(transform.position, 1f); // 1f 脦陋录矛虏芒掳毛戮露拢卢驴脡碌梅脮没
 
-            GameObject closestItem = null; // 最近的食物或收集物品
-            float closestDistance = float.MaxValue; // 初始化为一个很大的值
+            GameObject closestItem = null; // 脳卯陆眉碌脛脢鲁脦茂禄貌脢脮录炉脦茂脝路
+            float closestDistance = float.MaxValue; // 鲁玫脢录禄炉脦陋脪禄赂枚潞脺麓贸碌脛脰碌
 
             foreach (Collider obj in nearbyObjects)
             {
-                if (obj.CompareTag(foodTag) || obj.CompareTag("Collectible")) // 检查是否是食物或收集物品
+                if (obj.CompareTag(foodTag) || obj.CompareTag("Collectible")) // 录矛虏茅脢脟路帽脢脟脢鲁脦茂禄貌脢脮录炉脦茂脝路
                 {
                     float distance = Vector3.Distance(transform.position, obj.transform.position);
 
-                    // 如果当前物体比记录的更近，更新最近的物体
+                    // 脠莽鹿没碌卤脟掳脦茂脤氓卤脠录脟脗录碌脛赂眉陆眉拢卢赂眉脨脗脳卯陆眉碌脛脦茂脤氓
                     if (distance < closestDistance)
                     {
                         closestDistance = distance;
@@ -196,12 +196,12 @@ public class FishController : MonoBehaviour
                 }
             }
 
-            // 如果找到了最近的物体，进行交互
+            // 脠莽鹿没脮脪碌陆脕脣脳卯陆眉碌脛脦茂脤氓拢卢陆酶脨脨陆禄禄楼
             if (closestItem != null)
             {
                 if (closestItem.CompareTag("Collectible"))
                 {
-                    // 如果是收集物品，销毁并增加计数
+                    // 脠莽鹿没脢脟脢脮录炉脦茂脝路拢卢脧煤禄脵虏垄脭枚录脫录脝脢媒
                     Destroy(closestItem);
                     CollectedItemCount++;
                     Debug.Log($"CollectedItemCount: {CollectedItemCount}");
@@ -211,31 +211,31 @@ public class FishController : MonoBehaviour
                     Seaweed seaweed = closestItem.GetComponent<Seaweed>();
                     if (seaweed != null)
                     {
-                        // 如果水草正在重生，跳过处理
+                        // 脠莽鹿没脣庐虏脻脮媒脭脷脰脴脡煤拢卢脤酶鹿媒麓娄脌铆
                         if (seaweed.isRegrowing)
                         {
                             Debug.Log($"Skipped {closestItem.name} because it's regrowing.");
                             return;
                         }
 
-                        // 调用水草的 OnEaten 方法，处理水草的体积缩小和生长逻辑
+                        // 碌梅脫脙脣庐虏脻碌脛 OnEaten 路陆路篓拢卢麓娄脌铆脣庐虏脻碌脛脤氓禄媒脣玫脨隆潞脥脡煤鲁陇脗脽录颅
                         seaweed.OnEaten();
 
-                        // 根据水草的阴阳效果更新玩家的阴阳值
+                        // 赂霉戮脻脣庐虏脻碌脛脪玫脩么脨搂鹿没赂眉脨脗脥忙录脪碌脛脪玫脩么脰碌
                         UpdateYinYang(seaweed.yinYangEffect);
 
-                        // 根据水草的营养值增加玩家体型
+                        // 赂霉戮脻脣庐虏脻碌脛脫陋脩酶脰碌脭枚录脫脥忙录脪脤氓脨脥
                         transform.localScale += Vector3.one * seaweed.nutritionValue;
                     }
                     else
                     {
-                        // 如果不是水草，按照普通食物逻辑处理
-                        closestItem.transform.localScale *= foodShrinkFactor; // 食物变小
+                        // 脠莽鹿没虏禄脢脟脣庐虏脻拢卢掳麓脮脮脝脮脥篓脢鲁脦茂脗脽录颅麓娄脌铆
+                        closestItem.transform.localScale *= foodShrinkFactor; // 脢鲁脦茂卤盲脨隆
 
-                        // 鱼变大
+                        // 脫茫卤盲麓贸
                         transform.localScale += Vector3.one * growthFactor;
 
-                        // 如果食物太小，则销毁它
+                        // 脠莽鹿没脢鲁脦茂脤芦脨隆拢卢脭貌脧煤禄脵脣眉
                         if (closestItem.transform.localScale.x < 0.1f)
                         {
                             Destroy(closestItem);
@@ -248,72 +248,72 @@ public class FishController : MonoBehaviour
 
 
 
-    // 更新玩家阴阳值的方法
+    // 赂眉脨脗脥忙录脪脪玫脩么脰碌碌脛路陆路篓
     private void UpdateYinYang(float effect)
     {
-        yinYangValue += effect; // 根据水草的效果调整阴阳值
-        print("吃！");
-        yinYangValue = Mathf.Clamp(yinYangValue, -1f, 1f); // 确保阴阳值在 -1 到 1 之间
+        yinYangValue += effect; // 赂霉戮脻脣庐虏脻碌脛脨搂鹿没碌梅脮没脪玫脩么脰碌
+        print("鲁脭拢隆");
+        yinYangValue = Mathf.Clamp(yinYangValue, -1f, 1f); // 脠路卤拢脪玫脩么脰碌脭脷 -1 碌陆 1 脰庐录盲
     }
 
     private void CheckAndMoveRedBall()
     {
-        if (isEating && transform.localScale.x > 0.8f) // 确保当前处于进食状态
+        if (isEating && transform.localScale.x > 0.8f) // 脠路卤拢碌卤脟掳麓娄脫脷陆酶脢鲁脳麓脤卢
         {
-            // 查找所有具有 "RedBall" 标签的对象
+            // 虏茅脮脪脣霉脫脨戮脽脫脨 "RedBall" 卤锚脟漏碌脛露脭脧贸
             GameObject[] redBalls = GameObject.FindGameObjectsWithTag("RedBall");
 
             foreach (GameObject redBall in redBalls)
             {
                 float distance = Vector3.Distance(transform.position, redBall.transform.position);
 
-                // 如果红球在附近，将其移动到鱼的位置
-                if (distance < 1f) // 可根据需求调整距离范围
+                // 脠莽鹿没潞矛脟貌脭脷赂陆陆眉拢卢陆芦脝盲脪脝露炉碌陆脫茫碌脛脦禄脰脙
+                if (distance < 1f) // 驴脡赂霉戮脻脨猫脟贸碌梅脮没戮脿脌毛路露脦搂
                 {
 
-                    // 禁用碰撞器
+                    // 陆没脫脙脜枚脳虏脝梅
                     Collider redBallCollider = redBall.GetComponent<Collider>();
                     if (redBallCollider != null)
                     {
                         redBallCollider.enabled = false;
                     }
 
-                    // 将红球的位置设置为鱼的位置
+                    // 陆芦潞矛脟貌碌脛脦禄脰脙脡猫脰脙脦陋脫茫碌脛脦禄脰脙
                     redBall.transform.position = EatPoint.transform.position;
 
-                    // 检查红球与门的距离
-                    if (Door1 != null) // 确保 Door1 已分配
+                    // 录矛虏茅潞矛脟貌脫毛脙脜碌脛戮脿脌毛
+                    if (Door1 != null) // 脠路卤拢 Door1 脪脩路脰脜盲
                     {
                         float parentDistance = Vector3.Distance(Door1.transform.position, redBall.transform.position);
 
-                        if (parentDistance > maxDistance) // 超过最大距离
+                        if (parentDistance > maxDistance) // 鲁卢鹿媒脳卯麓贸戮脿脌毛
                         {
-                            Debug.Log("施加拉力");
+                            Debug.Log("脢漏录脫脌颅脕娄");
 
                             Rigidbody doorRb = Door1.GetComponent<Rigidbody>();
                             if (doorRb != null)
                             {
-                                // 计算正确的拉回方向并施加力
+                                // 录脝脣茫脮媒脠路碌脛脌颅禄脴路陆脧貌虏垄脢漏录脫脕娄
                                 Vector3 pullDirection = (EatPoint.transform.position - Door1.transform.position).normalized;
-                                doorRb.AddForce(pullDirection * 15f, ForceMode.Force); // 10.0f 可调整为所需的力
+                                doorRb.AddForce(pullDirection * 15f, ForceMode.Force); // 10.0f 驴脡碌梅脮没脦陋脣霉脨猫碌脛脕娄
                             }
                             else
                             {
-                                Debug.LogWarning("Door1 没有 Rigidbody 组件！");
+                                Debug.LogWarning("Door1 脙禄脫脨 Rigidbody 脳茅录镁拢隆");
                             }
                         }
 
-                        // 限制玩家位置
+                        // 脧脼脰脝脥忙录脪脦禄脰脙
                         float playerDistance = Vector3.Distance(Door1Point.transform.position, transform.position);
                         if (playerDistance > maxDistance)
                         {
-                            Debug.Log("限制玩家位置");
+                            Debug.Log("脧脼脰脝脥忙录脪脦禄脰脙");
 
                             Vector3 restrictedPosition = Door1Point.transform.position +
                                                           (transform.position - Door1Point.transform.position).normalized *
                                                           (maxDistance);
 
-                            // 只在超过范围时修正位置
+                            // 脰禄脭脷鲁卢鹿媒路露脦搂脢卤脨脼脮媒脦禄脰脙
                             transform.position = Vector3.MoveTowards(transform.position, restrictedPosition,
                                                                      playerDistance - (maxDistance));
 
@@ -325,7 +325,7 @@ public class FishController : MonoBehaviour
         }
         else
         {
-            // 如果不在进食状态，重新启用碰撞器
+            // 脠莽鹿没虏禄脭脷陆酶脢鲁脳麓脤卢拢卢脰脴脨脗脝么脫脙脜枚脳虏脝梅
             GameObject[] redBalls = GameObject.FindGameObjectsWithTag("RedBall");
 
             foreach (GameObject redBall in redBalls)
@@ -341,7 +341,7 @@ public class FishController : MonoBehaviour
 
 
     /// <summary>
-    /// 吃的冷却时间
+    /// 鲁脭碌脛脌盲脠麓脢卤录盲
     /// </summary>
     private IEnumerator EatCooldown()
     {
@@ -351,13 +351,13 @@ public class FishController : MonoBehaviour
     }
     void HandleShrink()
     {
-        // 检查阴阳值是否达到阈值
+        // 录矛虏茅脪玫脩么脰碌脢脟路帽麓茂碌陆茫脨脰碌
         if (Mathf.Abs(yinYangValue) >= 1f)
         {
-            // 获取当前缩放
+            // 禄帽脠隆碌卤脟掳脣玫路脜
             Vector3 currentScale = transform.localScale;
 
-            // 如果体型大于最小限制，则逐渐缩小体型
+            // 脠莽鹿没脤氓脨脥麓贸脫脷脳卯脨隆脧脼脰脝拢卢脭貌脰冒陆楼脣玫脨隆脤氓脨脥
             if (currentScale.x > minScale || currentScale.y > minScale || currentScale.z > minScale)
             {
                 transform.localScale = Vector3.Lerp(
@@ -372,17 +372,17 @@ public class FishController : MonoBehaviour
     {
         if (KeepY == false)
         {
-            speed = originalSpeed / 3f; // 将速度减少到原来的三分之一
+            speed = originalSpeed / 3f; // 陆芦脣脵露脠录玫脡脵碌陆脭颅脌麓碌脛脠媒路脰脰庐脪禄
         }
         else
         {
-            speed = originalSpeed; // 恢复默认速度
+            speed = originalSpeed; // 禄脰赂麓脛卢脠脧脣脵露脠
         }
         GameObject redBall = GameObject.FindGameObjectWithTag("RedBall");
         
         HandleShrink();
         float normalizedValue = Mathf.InverseLerp(-1f, 1f, yinYangValue);
-        yinYangSlider.value = normalizedValue; // 更新滑动条的值
+        yinYangSlider.value = normalizedValue; // 赂眉脨脗禄卢露炉脤玫碌脛脰碌
         UpdateFishColor();
         //FixedUpdate();      
         //HandleMovement();
@@ -402,12 +402,12 @@ public class FishController : MonoBehaviour
 
 
 
-        if (Input.GetMouseButton(0)) // 按住左键
+        if (Input.GetMouseButton(0)) // 掳麓脳隆脳贸录眉
         {
             EnterIsEatingState();
         }
 
-        if (Input.GetMouseButtonUp(0)) // 松开左键
+        if (Input.GetMouseButtonUp(0)) // 脣脡驴陋脳贸录眉
         {
             TriggerEatFood();
         }
@@ -424,42 +424,42 @@ public class FishController : MonoBehaviour
 
         if (KeepY == true)
         {
-            // 强制玩家 Y 坐标固定在 1
+            // 脟驴脰脝脥忙录脪 Y 脳酶卤锚鹿脤露篓脭脷 1
             Vector3 position = transform.position;
-            position.y = -1f; // 固定到 y = 1
+            position.y = -1f; // 鹿脤露篓碌陆 y = 1
             transform.position = position;
         }
     }
     private void HandleMovement()
     {
-        // 获取玩家输入
+        // 禄帽脠隆脥忙录脪脢盲脠毛
         Vector3 moveInput = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
 
         if (moveInput.magnitude > 0)
         {
-            // 归一化方向向量
+            // 鹿茅脪禄禄炉路陆脧貌脧貌脕驴
             Vector3 moveDirection = moveInput.normalized;
 
             if (!isBlocked)
             {
-                // 直接设置刚体的速度
+                // 脰卤陆脫脡猫脰脙赂脮脤氓碌脛脣脵露脠
                 rb.velocity = new Vector3(moveDirection.x * speed, rb.velocity.y, moveDirection.z * speed);
             }
             else
             {
-                // 如果被阻挡，仅停止水平移动，保留垂直速度
+                // 脠莽鹿没卤禄脳猫碌虏拢卢陆枚脥拢脰鹿脣庐脝陆脪脝露炉拢卢卤拢脕么麓鹿脰卤脣脵露脠
                 rb.velocity = new Vector3(0, rb.velocity.y, 0);
             }
 
-            // 无论是否阻挡，都允许转向
+            // 脦脼脗脹脢脟路帽脳猫碌虏拢卢露录脭脢脨铆脳陋脧貌
             Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
             rb.rotation = Quaternion.Slerp(rb.rotation, targetRotation, rotationSpeed * Time.fixedDeltaTime);
         }
         else
         {
-            // 停止输入时立即停止水平速度，但保持垂直速度
+            // 脥拢脰鹿脢盲脠毛脢卤脕垄录麓脥拢脰鹿脣庐脝陆脣脵露脠拢卢碌芦卤拢鲁脰麓鹿脰卤脣脵露脠
             rb.velocity = new Vector3(0, rb.velocity.y, 0);
-            rb.angularVelocity = Vector3.zero; // 停止角速度
+            rb.angularVelocity = Vector3.zero; // 脥拢脰鹿陆脟脣脵露脠
         }
     }
 
@@ -468,7 +468,7 @@ public class FishController : MonoBehaviour
 
 
 
-    // 检测 Test 与 Door 或 Wall 的接触
+    // 录矛虏芒 Test 脫毛 Door 禄貌 Wall 碌脛陆脫麓楼
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Wall") || other.CompareTag("Door"))
@@ -489,35 +489,35 @@ public class FishController : MonoBehaviour
 
 
 
-    private float previousYPosition; // 记录上一帧的 Y 位置
+    private float previousYPosition; // 录脟脗录脡脧脪禄脰隆碌脛 Y 脦禄脰脙
 
     private void HandleSplashEffect()
     {
         if (splashEffect == null) return;
 
-        // 更新粒子系统位置为鱼的位置
+        // 赂眉脨脗脕拢脳脫脧碌脥鲁脦禄脰脙脦陋脫茫碌脛脦禄脰脙
         splashEffect.transform.position = transform.position;
 
-        // 检查是否在跳跃状态并且鱼的 Y 坐标大于 -1
+        // 录矛虏茅脢脟路帽脭脷脤酶脭戮脳麓脤卢虏垄脟脪脫茫碌脛 Y 脳酶卤锚麓贸脫脷 -1
         if (isJumping && transform.position.y > -1)
         {
-            if (!splashEffect.isPlaying) // 确保粒子效果没有重复播放
+            if (!splashEffect.isPlaying) // 脠路卤拢脕拢脳脫脨搂鹿没脙禄脫脨脰脴赂麓虏楼路脜
             {
                 Debug.Log("Fish above water during jump, splash starts!");
                 splashEffect.Play();
             }
         }
-        // 如果鱼的 Y 坐标等于 -1 或处于下潜状态，停止粒子效果
+        // 脠莽鹿没脫茫碌脛 Y 脳酶卤锚碌脠脫脷 -1 禄貌麓娄脫脷脧脗脟卤脳麓脤卢拢卢脥拢脰鹿脕拢脳脫脨搂鹿没
         else if (transform.position.y <= -1 || isDiving)
         {
-            if (splashEffect.isPlaying) // 确保粒子效果正在播放时停止
+            if (splashEffect.isPlaying) // 脠路卤拢脕拢脳脫脨搂鹿没脮媒脭脷虏楼路脜脢卤脥拢脰鹿
             {
                 Debug.Log("Fish at or below water level, splash stops!");
                 splashEffect.Stop();
             }
         }
 
-        // 更新上一帧的 Y 位置
+        // 赂眉脨脗脡脧脪禄脰隆碌脛 Y 脦禄脰脙
         previousYPosition = transform.position.y;
     }
 
@@ -533,7 +533,7 @@ public class FishController : MonoBehaviour
                 diveStartTime = Time.time;
                 StartCoroutine(Dive());
 
-                // 触发下潜粒子效果
+                // 麓楼路垄脧脗脟卤脕拢脳脫脨搂鹿没
                 //particleManager?.PlayParticleEffect();
             }
         }
@@ -548,7 +548,7 @@ public class FishController : MonoBehaviour
             currentJumpSpeed = initialJumpSpeed;
             StartCoroutine(Jump(jumpHeight));
 
-            // 触发出水粒子效果
+            // 麓楼路垄鲁枚脣庐脕拢脳脫脨搂鹿没
             //particleManager?.PlayParticleEffect();
         }
     }
@@ -577,7 +577,7 @@ public class FishController : MonoBehaviour
     {
         float startY = transform.position.y;
 
-        // 上升阶段
+        // 脡脧脡媒陆脳露脦
         while (transform.position.y < targetHeight && currentJumpSpeed > 0)
         {
             currentYPosition += currentJumpSpeed * Time.deltaTime;
@@ -586,10 +586,10 @@ public class FishController : MonoBehaviour
             yield return null;
         }
 
-        // 确保到达 targetHeight
+        // 脠路卤拢碌陆麓茂 targetHeight
         transform.position = new Vector3(transform.position.x, targetHeight, transform.position.z);
 
-        // 下落阶段
+        // 脧脗脗盲陆脳露脦
         float currentFallSpeed = 0f;
         while (transform.position.y > defaultYPosition)
         {
@@ -602,7 +602,7 @@ public class FishController : MonoBehaviour
             {
                 transform.position = new Vector3(transform.position.x, defaultYPosition, transform.position.z);
 
-                // 停止播放粒子效果
+                // 脥拢脰鹿虏楼路脜脕拢脳脫脨搂鹿没
                 //if (splashEffect != null && splashEffect.isPlaying)
                 //{
                 //    splashEffect.Stop();
