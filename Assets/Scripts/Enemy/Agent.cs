@@ -1,28 +1,35 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
-public class Agent : MonoBehaviour
+public class Agent : MonoBehaviour, IEatable
 {
+    [Header("Stats")]
+    public float YinYangEffect = 0.1f;
     // Movement speed of the agent
-    public float speed = 1f;
+
+    public float Speed = 1f;
 
     // Turning speed of the agent
-    public float turnSpeed = 10f;
+    public float TurnSpeed = 10f;
 
     // Minimum interval between turns (in seconds)
-    public float minTurnInterval = 2f;
+    public float MinTurnInterval = 2f;
 
     // Maximum interval between turns (in seconds)
-    public float maxTurnInterval = 6f;
+    public float MaxTurnInterval = 6f;
 
     // Damping factor for smooth rotation 
-    public float smoothDamping = 0.1f;
+    public float SmoothDamping = 0.1f;
 
     private Rigidbody rb;
     private float turnTimer = 0f;
     private float turnInterval = 0f;
     private Quaternion targetRotation = Quaternion.identity;
+
+    public static event Action<float> OnEaten; // Action 
 
     private void Start()
     {
@@ -30,7 +37,7 @@ public class Agent : MonoBehaviour
         rb = GetComponent<Rigidbody>();
 
         // Initialize the turn interval to a random value between minTurnInterval and maxTurnInterval
-        turnInterval = Random.Range(minTurnInterval, maxTurnInterval);
+        turnInterval = Random.Range(MinTurnInterval, MaxTurnInterval);
     }
 
     private void FixedUpdate()
@@ -45,7 +52,7 @@ public class Agent : MonoBehaviour
     private void Move()
     {
         // Calculate the movement vector based on the agent's forward direction, speed, and time step
-        Vector3 movement = transform.forward * speed * Time.fixedDeltaTime;
+        Vector3 movement = transform.forward * Speed * Time.fixedDeltaTime;
 
         // Move the agent using Rigidbody.MovePosition
         rb.MovePosition(rb.position + movement);
@@ -60,16 +67,27 @@ public class Agent : MonoBehaviour
         if (turnTimer >= turnInterval)
         {
             // Generate a random turning amount and apply it to the agent's rotation
-            float turnAmount = Random.Range(-turnSpeed, turnSpeed);
+            float turnAmount = Random.Range(-TurnSpeed, TurnSpeed);
             targetRotation = Quaternion.Euler(0f, turnAmount, 0f) * rb.rotation;
 
             // Reset the turn timer to 0
             turnTimer = 0f;
 
             // Update the turn interval to a new random value between minTurnInterval and maxTurnInterval
-            turnInterval = Random.Range(minTurnInterval, maxTurnInterval);
+            turnInterval = Random.Range(MinTurnInterval, MaxTurnInterval);
         }
 
-        rb.MoveRotation(Quaternion.Lerp(rb.rotation, targetRotation, Time.fixedDeltaTime * smoothDamping));
+        rb.MoveRotation(Quaternion.Lerp(rb.rotation, targetRotation, Time.fixedDeltaTime * SmoothDamping));
+    }
+
+    public void CheckEatable(Vector3 scale)
+    {
+        if (scale.x > transform.localScale.x)
+        {
+            //Eaten
+            OnEaten?.Invoke(YinYangEffect);
+
+            Destroy(gameObject);
+        }
     }
 }

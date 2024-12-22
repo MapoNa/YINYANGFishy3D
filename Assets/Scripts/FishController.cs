@@ -15,22 +15,23 @@ public class FishController : MonoBehaviour
     public Slider yinYangSlider;
 
     public float speed = 5f;
+    public float flashSpeed = 2f; // ÉÁË¸ËÙ¶È
     public float rotationSpeed = 100f;
     private float originalSpeed; // ±£´æÄ¬ÈÏËÙ¶ÈÖµ
 
     public Light mainLight; // ³¡¾°ÖÐµÄÖ÷¹âÔ´
     public LayerMask shadowCastingLayers; // ÓÃÓÚ¼ì²âÒõÓ°µÄÍ¼²ã
     public bool isInShadow = false; // µ±Ç°ÊÇ·ñÔÚÒõÓ°ÖÐ
-    public bool KeepY = true;// ±£³ÖyµÄÎ»ÖÃ
-    public float yinYangValue = 0f;  // ÒõÑôÖµ£º·¶Î§ -1 µ½ 1
-    public float size = 1f;         // ÓãµÄÌåÐÍ
+    public bool KeepY = true; // ±£³ÖyµÄÎ»ÖÃ
+    public float yinYangValue = 0f; // ÒõÑôÖµ£º·¶Î§ -1 µ½ 1
+    public float size = 1f; // ÓãµÄÌåÐÍ
     public float shrinkRate = 0.1f; // Òç³öÊ±ËõÐ¡µÄËÙÂÊ
 
-    public Material fishMaterial;  // Íæ¼ÒÓãµÄ²ÄÖÊ
+    public Material fishMaterial; // Íæ¼ÒÓãµÄ²ÄÖÊ
 
     // ÒõÑôÑÕÉ«
     public Color yinColor = Color.black; // ÒõÓ°´ú±íµÄÑÕÉ«£¨ºÚÉ«£©
-    public Color yangColor = Color.white;  // Ñô¹â´ú±íµÄÑÕÉ«£¨ºìÉ«£©
+    public Color yangColor = Color.white; // Ñô¹â´ú±íµÄÑÕÉ«£¨ºìÉ«£©
 
     private Rigidbody rb;
     public ParticleSystem splashEffect;
@@ -39,7 +40,9 @@ public class FishController : MonoBehaviour
     public GameObject FishEating;
     public GameObject EatPoint;
     public GameObject Door1;
+
     public GameObject Door1Point;
+
     //public ParticleManager particleManager; 
     // Fish jump variables
     public float defaultYPosition = -1f;
@@ -58,16 +61,21 @@ public class FishController : MonoBehaviour
     private float currentFallSpeed;
 
     //Eat
-    public float growthFactor = 0.1f;        // ÓãÃ¿´Î±ä´óµÄÁ¿
-    public float foodShrinkFactor = 0.5f;   // Ê³ÎïÃ¿´Î±äÐ¡µÄÁ¿
-    public float eatCooldown = 0.3f;        // Ã¿´Î½øÈë IsEating ×´Ì¬µÄ¼ä¸ôÊ±¼ä
-    public string foodTag = "FishFood";     // Ê³ÎïµÄ±êÇ©
+    public float growthFactor = 0.1f; // ÓãÃ¿´Î±ä´óµÄÁ¿
+    public float foodShrinkFactor = 0.5f; // Ê³ÎïÃ¿´Î±äÐ¡µÄÁ¿
+    public float eatCooldown = 0.3f; // Ã¿´Î½øÈë IsEating ×´Ì¬µÄ¼ä¸ôÊ±¼ä
+    public string foodTag = "FishFood"; // Ê³ÎïµÄ±êÇ©
 
     public float shrinkSpeed = 0.001f; // ¼õÐ¡ÌåÐÍµÄËÙ¶È
     public float minScale = 0.5f; // ×îÐ¡ÌåÐÍÏÞÖÆ
 
-    private bool isEating = false;          // ÊÇ·ñÔÚ³ÔÊ³Îï
-    private bool canEat = true;             // ÊÇ·ñ¿ÉÒÔ½øÈë IsEating ×´Ì¬
+    private bool isEating = false; // ÊÇ·ñÔÚ³ÔÊ³Îï
+
+    private bool canEat = true;
+
+    //Check
+    public Collider[] NearByObjects;
+
     private void FixedUpdate()
     {
         HandleSplashEffect();
@@ -77,17 +85,11 @@ public class FishController : MonoBehaviour
         //rb.AddForce(new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")) * MoveSpeed);
         //rb.velocity = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")) * MoveSpeed;
         // ÕÒµ½ "RedBall"
-
     }
-
-
-
 
 
     /// ¸ù¾ÝÒõÑôÖµ¶¯Ì¬¸üÐÂÓãµÄÑÕÉ«
     /// </summary>
-    public float flashSpeed = 2f; // ÉÁË¸ËÙ¶È
-
     public void UpdateFishColor()
     {
         // ÅÐ¶ÏÒõÑôÖµÊÇ·ñ¹ý¸ß»ò¹ýµÍ
@@ -109,9 +111,6 @@ public class FishController : MonoBehaviour
     }
 
 
-
-
-
     void Start()
     {
         originalSpeed = speed;
@@ -125,12 +124,14 @@ public class FishController : MonoBehaviour
                 return;
             }
         }
+
         rb = GetComponent<Rigidbody>();
 
 
         currentYPosition = defaultYPosition;
         transform.position = new Vector3(transform.position.x, defaultYPosition, transform.position.z);
     }
+
     /// <summary>
     /// ½øÈë IsEating ×´Ì¬
     /// </summary>
@@ -143,7 +144,6 @@ public class FishController : MonoBehaviour
         }
     }
     // ¶¨ÒåÒ»¸ö LayerMask£¬ÅÅ³ý FishModel Í¼²ã
-
 
 
     void DetectShadow()
@@ -176,12 +176,12 @@ public class FishController : MonoBehaviour
             isEating = false; // Í£Ö¹³ÔµÄ×´Ì¬
 
             // ²éÕÒ¸½½üµÄÎïÌå
-            Collider[] nearbyObjects = Physics.OverlapSphere(transform.position, 1f); // 1f Îª¼ì²â°ë¾¶£¬¿Éµ÷Õû
+            NearByObjects = Physics.OverlapSphere(transform.position, 1f); // 1f Îª¼ì²â°ë¾¶£¬¿Éµ÷Õû
 
             GameObject closestItem = null; // ×î½üµÄÊ³Îï»òÊÕ¼¯ÎïÆ·
             float closestDistance = float.MaxValue; // ³õÊ¼»¯ÎªÒ»¸öºÜ´óµÄÖµ
 
-            foreach (Collider obj in nearbyObjects)
+            foreach (Collider obj in NearByObjects)
             {
                 if (obj.CompareTag(foodTag) || obj.CompareTag("Collectible")) // ¼ì²éÊÇ·ñÊÇÊ³Îï»òÊÕ¼¯ÎïÆ·
                 {
@@ -247,7 +247,6 @@ public class FishController : MonoBehaviour
     }
 
 
-
     // ¸üÐÂÍæ¼ÒÒõÑôÖµµÄ·½·¨
     private void UpdateYinYang(float effect)
     {
@@ -270,7 +269,6 @@ public class FishController : MonoBehaviour
                 // Èç¹ûºìÇòÔÚ¸½½ü£¬½«ÆäÒÆ¶¯µ½ÓãµÄÎ»ÖÃ
                 if (distance < 1f) // ¿É¸ù¾ÝÐèÇóµ÷Õû¾àÀë·¶Î§
                 {
-
                     // ½ûÓÃÅö×²Æ÷
                     Collider redBallCollider = redBall.GetComponent<Collider>();
                     if (redBallCollider != null)
@@ -294,7 +292,8 @@ public class FishController : MonoBehaviour
                             if (doorRb != null)
                             {
                                 // ¼ÆËãÕýÈ·µÄÀ­»Ø·½Ïò²¢Ê©¼ÓÁ¦
-                                Vector3 pullDirection = (EatPoint.transform.position - Door1.transform.position).normalized;
+                                Vector3 pullDirection =
+                                    (EatPoint.transform.position - Door1.transform.position).normalized;
                                 doorRb.AddForce(pullDirection * 15f, ForceMode.Force); // 10.0f ¿Éµ÷ÕûÎªËùÐèµÄÁ¦
                             }
                             else
@@ -310,15 +309,14 @@ public class FishController : MonoBehaviour
                             Debug.Log("ÏÞÖÆÍæ¼ÒÎ»ÖÃ");
 
                             Vector3 restrictedPosition = Door1Point.transform.position +
-                                                          (transform.position - Door1Point.transform.position).normalized *
-                                                          (maxDistance);
+                                                         (transform.position - Door1Point.transform.position)
+                                                        .normalized *
+                                                         (maxDistance);
 
                             // Ö»ÔÚ³¬¹ý·¶Î§Ê±ÐÞÕýÎ»ÖÃ
                             transform.position = Vector3.MoveTowards(transform.position, restrictedPosition,
                                                                      playerDistance - (maxDistance));
-
                         }
-
                     }
                 }
             }
@@ -349,6 +347,7 @@ public class FishController : MonoBehaviour
         yield return new WaitForSeconds(eatCooldown);
         canEat = true;
     }
+
     void HandleShrink()
     {
         // ¼ì²éÒõÑôÖµÊÇ·ñ´ïµ½ãÐÖµ
@@ -361,13 +360,14 @@ public class FishController : MonoBehaviour
             if (currentScale.x > minScale || currentScale.y > minScale || currentScale.z > minScale)
             {
                 transform.localScale = Vector3.Lerp(
-                    currentScale,
-                    new Vector3(minScale, minScale, minScale),
-                    shrinkSpeed * Time.deltaTime
-                );
+                                                    currentScale,
+                                                    new Vector3(minScale, minScale, minScale),
+                                                    shrinkSpeed * Time.deltaTime
+                                                   );
             }
         }
     }
+
     void Update()
     {
         if (KeepY == false)
@@ -378,28 +378,26 @@ public class FishController : MonoBehaviour
         {
             speed = originalSpeed; // »Ö¸´Ä¬ÈÏËÙ¶È
         }
+
         GameObject redBall = GameObject.FindGameObjectWithTag("RedBall");
-        
+
         HandleShrink();
         float normalizedValue = Mathf.InverseLerp(-1f, 1f, yinYangValue);
         yinYangSlider.value = normalizedValue; // ¸üÐÂ»¬¶¯ÌõµÄÖµ
         UpdateFishColor();
         //FixedUpdate();      
         //HandleMovement();
-       
+
         DetectShadow();
         if (isInShadow == true && yinYangValue < 1)
         {
             yinYangValue += 0.0004f;
         }
+
         if (isInShadow == false && yinYangValue > -1)
         {
             yinYangValue -= 0.0004f;
         }
-
-
-
-
 
 
         if (Input.GetMouseButton(0)) // °´×¡×ó¼ü
@@ -411,6 +409,7 @@ public class FishController : MonoBehaviour
         {
             TriggerEatFood();
         }
+
         if (isEating == true)
         {
             FishEating.SetActive(true);
@@ -430,6 +429,7 @@ public class FishController : MonoBehaviour
             transform.position = position;
         }
     }
+
     private void HandleMovement()
     {
         // »ñÈ¡Íæ¼ÒÊäÈë
@@ -464,10 +464,6 @@ public class FishController : MonoBehaviour
     }
 
 
-
-
-
-
     // ¼ì²â Test Óë Door »ò Wall µÄ½Ó´¥
     private void OnTriggerEnter(Collider other)
     {
@@ -486,7 +482,6 @@ public class FishController : MonoBehaviour
             Debug.Log($"Unblocked: {other.name}");
         }
     }
-
 
 
     private float previousYPosition; // ¼ÇÂ¼ÉÏÒ»Ö¡µÄ Y Î»ÖÃ
@@ -520,7 +515,6 @@ public class FishController : MonoBehaviour
         // ¸üÐÂÉÏÒ»Ö¡µÄ Y Î»ÖÃ
         previousYPosition = transform.position.y;
     }
-
 
 
     void HandleFishJump()
