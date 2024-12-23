@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -74,10 +75,11 @@ public class FishController : MonoBehaviour
     private bool canEat = true;
 
     //Check
-    public Collider[] NearByObjects;
+    public List<Collider> NearByObjects;
 
     private void FixedUpdate()
     {
+        Debug.Log(isInShadow);
         HandleSplashEffect();
         HandleMovement();
         CheckAndMoveRedBall();
@@ -174,17 +176,17 @@ public class FishController : MonoBehaviour
         if (isEating)
         {
             isEating = false; // Í£Ö¹³ÔµÄ×´Ì¬
-
             // ²éÕÒ¸½½üµÄÎïÌå
-            NearByObjects = Physics.OverlapSphere(transform.position, 1f); // 1f Îª¼ì²â°ë¾¶£¬¿Éµ÷Õû
+            var coliders = Physics.OverlapSphere(transform.position, 1f); // 1f Îª¼ì²â°ë¾¶£¬¿Éµ÷Õû
 
             GameObject closestItem = null; // ×î½üµÄÊ³Îï»òÊÕ¼¯ÎïÆ·
             float closestDistance = float.MaxValue; // ³õÊ¼»¯ÎªÒ»¸öºÜ´óµÄÖµ
 
-            foreach (Collider obj in NearByObjects)
+            foreach (Collider obj in coliders)
             {
                 if (obj.CompareTag(foodTag) || obj.CompareTag("Collectible")) // ¼ì²éÊÇ·ñÊÇÊ³Îï»òÊÕ¼¯ÎïÆ·
                 {
+                    NearByObjects.Add(obj);
                     float distance = Vector3.Distance(transform.position, obj.transform.position);
 
                     // Èç¹ûµ±Ç°ÎïÌå±È¼ÇÂ¼µÄ¸ü½ü£¬¸üÐÂ×î½üµÄÎïÌå

@@ -6,6 +6,7 @@ using UnityEngine;
 public class EatFishManager : MonoBehaviour
 {
     private FishController fishController;
+    private bool hasExecuted = false;
 
     private void Start()
     {
@@ -14,20 +15,19 @@ public class EatFishManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetMouseButtonUp(0))
+        if (Input.GetMouseButtonUp(0) && !hasExecuted)
         {
-            for (int i = 0; i < fishController.NearByObjects.Length; i++)
+            hasExecuted = true;
+            foreach (var col in fishController.NearByObjects)
             {
-                if (fishController.NearByObjects[i] != null)
+                if (col.GetComponent<IEatable>() != null)
                 {
-                    if (fishController.NearByObjects[i].TryGetComponent(out IEatable eatable))
-                    {
-                        eatable.CheckEatable(fishController.transform.localScale);
-                        fishController.NearByObjects[i] = null;
-                        break;
-                    }
+                    col.GetComponent<IEatable>().CheckEatable(transform.localScale);
+                    break;
                 }
             }
+
+            fishController.NearByObjects.Clear();
         }
     }
 }
