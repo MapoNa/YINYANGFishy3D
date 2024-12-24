@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class FishController : MonoBehaviour
 {
     public int CollectedItemCount = 0; // ÊÕ¼¯ÎïÆ·¼ÆÊý
-    [SerializeField] float MoveSpeed;
     public float maxDistance = 1.44f; // ÉþË÷µÄ×î´ó¾àÀë
     public float pullForce = 1f; // ¸ø¸¸ÎïÌåÊ©¼ÓµÄÁ¦´óÐ¡
     private GameObject grabbedBall; // µ±Ç°Ò§×¡µÄÇò
@@ -70,16 +69,12 @@ public class FishController : MonoBehaviour
     public float shrinkSpeed = 0.001f; // ¼õÐ¡ÌåÐÍµÄËÙ¶È
     public float minScale = 0.5f; // ×îÐ¡ÌåÐÍÏÞÖÆ
 
-    private bool isEating = false; // ÊÇ·ñÔÚ³ÔÊ³Îï
+    public bool isEating = false; // ÊÇ·ñÔÚ³ÔÊ³Îï
 
     private bool canEat = true;
 
-    //Check
-    public List<Collider> NearByObjects;
-
     private void FixedUpdate()
     {
-        Debug.Log(isInShadow);
         HandleSplashEffect();
         HandleMovement();
         CheckAndMoveRedBall();
@@ -186,7 +181,7 @@ public class FishController : MonoBehaviour
             {
                 if (obj.CompareTag(foodTag) || obj.CompareTag("Collectible")) // ¼ì²éÊÇ·ñÊÇÊ³Îï»òÊÕ¼¯ÎïÆ·
                 {
-                    NearByObjects.Add(obj);
+                    Debug.Log("Eating " + obj.name);
                     float distance = Vector3.Distance(transform.position, obj.transform.position);
 
                     // Èç¹ûµ±Ç°ÎïÌå±È¼ÇÂ¼µÄ¸ü½ü£¬¸üÐÂ×î½üµÄÎïÌå
@@ -263,11 +258,11 @@ public class FishController : MonoBehaviour
         {
             // ²éÕÒËùÓÐ¾ßÓÐ "RedBall" ±êÇ©µÄ¶ÔÏó
             GameObject[] redBalls = GameObject.FindGameObjectsWithTag("RedBall");
-
+    
             foreach (GameObject redBall in redBalls)
             {
                 float distance = Vector3.Distance(transform.position, redBall.transform.position);
-
+    
                 // Èç¹ûºìÇòÔÚ¸½½ü£¬½«ÆäÒÆ¶¯µ½ÓãµÄÎ»ÖÃ
                 if (distance < 1f) // ¿É¸ù¾ÝÐèÇóµ÷Õû¾àÀë·¶Î§
                 {
@@ -277,19 +272,19 @@ public class FishController : MonoBehaviour
                     {
                         redBallCollider.enabled = false;
                     }
-
+    
                     // ½«ºìÇòµÄÎ»ÖÃÉèÖÃÎªÓãµÄÎ»ÖÃ
                     redBall.transform.position = EatPoint.transform.position;
-
+    
                     // ¼ì²éºìÇòÓëÃÅµÄ¾àÀë
                     if (Door1 != null) // È·±£ Door1 ÒÑ·ÖÅä
                     {
                         float parentDistance = Vector3.Distance(Door1.transform.position, redBall.transform.position);
-
+    
                         if (parentDistance > maxDistance) // ³¬¹ý×î´ó¾àÀë
                         {
                             Debug.Log("Ê©¼ÓÀ­Á¦");
-
+    
                             Rigidbody doorRb = Door1.GetComponent<Rigidbody>();
                             if (doorRb != null)
                             {
@@ -303,18 +298,18 @@ public class FishController : MonoBehaviour
                                 Debug.LogWarning("Door1 Ã»ÓÐ Rigidbody ×é¼þ£¡");
                             }
                         }
-
+    
                         // ÏÞÖÆÍæ¼ÒÎ»ÖÃ
                         float playerDistance = Vector3.Distance(Door1Point.transform.position, transform.position);
                         if (playerDistance > maxDistance)
                         {
                             Debug.Log("ÏÞÖÆÍæ¼ÒÎ»ÖÃ");
-
+    
                             Vector3 restrictedPosition = Door1Point.transform.position +
                                                          (transform.position - Door1Point.transform.position)
                                                         .normalized *
                                                          (maxDistance);
-
+    
                             // Ö»ÔÚ³¬¹ý·¶Î§Ê±ÐÞÕýÎ»ÖÃ
                             transform.position = Vector3.MoveTowards(transform.position, restrictedPosition,
                                                                      playerDistance - (maxDistance));
@@ -327,7 +322,7 @@ public class FishController : MonoBehaviour
         {
             // Èç¹û²»ÔÚ½øÊ³×´Ì¬£¬ÖØÐÂÆôÓÃÅö×²Æ÷
             GameObject[] redBalls = GameObject.FindGameObjectsWithTag("RedBall");
-
+    
             foreach (GameObject redBall in redBalls)
             {
                 Collider redBallCollider = redBall.GetComponent<Collider>();
