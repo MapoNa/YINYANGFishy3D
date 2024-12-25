@@ -24,7 +24,7 @@ public class Agent : MonoBehaviour, IEatable
     // Damping factor for smooth rotation 
     public float SmoothDamping = 0.1f;
 
-    private Rigidbody rb;
+    protected Rigidbody rb;
     private float turnTimer = 0f;
     private float turnInterval = 0f;
     private Quaternion targetRotation = Quaternion.identity;
@@ -40,7 +40,7 @@ public class Agent : MonoBehaviour, IEatable
         turnInterval = Random.Range(MinTurnInterval, MaxTurnInterval);
     }
 
-    private void FixedUpdate()
+    virtual protected void FixedUpdate()
     {
         // Move the agent
         Move();
@@ -49,7 +49,7 @@ public class Agent : MonoBehaviour, IEatable
         Turn();
     }
 
-    private void Move()
+    virtual protected void Move()
     {
         // Calculate the movement vector based on the agent's forward direction, speed, and time step
         Vector3 movement = transform.forward * Speed * Time.fixedDeltaTime;
@@ -58,7 +58,7 @@ public class Agent : MonoBehaviour, IEatable
         rb.MovePosition(rb.position + movement);
     }
 
-    private void Turn()
+    virtual protected void Turn()
     {
         // Increment the turn timer by the time step
         turnTimer += Time.fixedDeltaTime;

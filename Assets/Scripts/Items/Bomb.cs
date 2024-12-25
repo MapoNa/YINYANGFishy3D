@@ -39,10 +39,13 @@ public class Bomb : MonoBehaviour
                             .AddExplosionForce(explosionForce, transform.position, explosionRadius, 1f,
                                                ForceMode.Impulse);
             }
+
+            if (colliders[i].GetComponent<Wall>())
+            {
+                Destroy(colliders[i].gameObject);
+            }
         }
 
         Destroy(transform.parent.gameObject);
     }
-    
-    
 }
