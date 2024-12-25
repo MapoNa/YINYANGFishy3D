@@ -1,14 +1,18 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 public class BossAgent : Agent
 {
+    static private readonly int attackState = Animator.StringToHash("Attack");
+    static private readonly int _speed = Animator.StringToHash("Speed");
+
     public float ChaseSpeed = 15f;
     public float Acceleration = 0.5f;
-
+    public float SmashSpeed = 100f;
     public int Hp = 3;
     public int ShieldPoint = 1;
     public float AttackDelayTimer = 2f;
@@ -16,13 +20,15 @@ public class BossAgent : Agent
     public float DetectPlayerDistance = 15f;
     public Vector2 TimeBetweenAttacks;
     private Animator animatorAI;
-    private float randomTimer;
+    public float randomTimer = 5f;
     private DistanceChecker distanceChecker;
+    private bool canMoving = true;
 
     private void Start()
     {
         animatorAI = GetComponent<Animator>();
         distanceChecker = GetComponent<DistanceChecker>();
+        rb = GetComponent<Rigidbody>();
     }
 
     private float RandomTimer()
@@ -32,24 +38,38 @@ public class BossAgent : Agent
         return randomValue;
     }
 
-    // public void SelectSkills()
-    // {
-    //     if (randomTimer > 0)
-    //     {
-    //         randomTimer -= Time.deltaTime;
-    //     }
-    //     else
-    //     {
-    //         SetAttack();
-    //         randomTimer = RandomTimer();
-    //     }
-    // }
+    public void SelectSkills()
+    {
+        if (randomTimer > 0)
+        {
+            randomTimer -= Time.deltaTime;
+        }
+        else
+        {
+            SetAttack();
+            randomTimer = RandomTimer();
+        }
+    }
 
-    // IEnumerator SetAttack()
-    // {
-    //     yield return new WaitForSeconds(AttackDelayTimer);
-    //     animatorAI.SetTrigger(_attackState);
-    // }
+    private void SetAttack()
+    {
+        canMoving = false;
+        animatorAI.SetTrigger(attackState);
+    }
+
+    override protected void StartAttack()
+    {
+        StartCoroutine(Attack());
+    }
+
+    public IEnumerator Attack()
+    {
+        var endPos = PlayerSingleton.Instance.transform.position;
+        rb.DOMove(endPos, AttackDelayTimer);
+        yield return new WaitForSeconds(AttackDelayTimer);
+        canMoving = true;
+    }
+
 
     public void TakeDamage(int damage)
     {
@@ -62,17 +82,31 @@ public class BossAgent : Agent
 
     override protected void FixedUpdate()
     {
+        if (DetectedPlayer() && canMoving)
+        {
+            SelectSkills();
+            ChaseMove();
+        }
+        else if (canMoving)
+        {
+            BaseMove();
+        }
+        else
+        {
+            rb.velocity = Vector3.zero;
+        }
+
+        animatorAI.SetFloat(_speed, rb.velocity.magnitude, 0.1f, Time.deltaTime);
     }
 
     public void ChaseMove()
     {
+        Debug.Log("chase move");
         transform.LookAt(PlayerSingleton.Instance.transform);
-        var dir = distanceChecker.DirectionFromPlayer();
 
-        var desiredVelocity = Vector3.zero;
-        desiredVelocity = dir * ChaseSpeed;
-
+        var desiredVelocity = transform.forward * ChaseSpeed;
         rb.velocity = Vector3.Lerp(rb.velocity, desiredVelocity, Acceleration);
+        Debug.Log(rb.velocity);
     }
 
     public void BaseMove()

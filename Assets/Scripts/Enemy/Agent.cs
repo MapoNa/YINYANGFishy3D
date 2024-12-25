@@ -90,4 +90,8 @@ public class Agent : MonoBehaviour, IEatable
             Destroy(gameObject);
         }
     }
+    virtual protected void StartAttack()
+    {
+       
+    }
 }
