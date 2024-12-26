@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerSingleton : MonoBehaviour
 {
     private static PlayerSingleton instance;
+    public bool IsAlive = true;
 
     public static PlayerSingleton Instance
     {

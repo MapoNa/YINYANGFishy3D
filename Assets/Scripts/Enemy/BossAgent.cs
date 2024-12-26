@@ -149,7 +149,13 @@ public class BossAgent : Agent
         {
             ShieldPoint--;
             ShieldMaterial.gameObject.SetActive(false);
+            ShieldImage.gameObject.SetActive(false);
             other.gameObject.SetActive(false);
+        }
+
+        if (other.GetComponent<FishController>())
+        {
+            PlayerSingleton.Instance.IsAlive = false;
         }
     }
 }
