@@ -44,6 +44,13 @@ public class Bomb : MonoBehaviour
             {
                 Destroy(colliders[i].gameObject);
             }
+
+            if (colliders[i].GetComponent<BossAgent>())
+            {
+                var bossAgent = colliders[i].GetComponent<BossAgent>();
+                bossAgent.TakeDamage(1);
+
+            }
         }
 
         Destroy(transform.parent.gameObject);

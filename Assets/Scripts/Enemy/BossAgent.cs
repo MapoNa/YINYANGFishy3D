@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 public class BossAgent : Agent
@@ -12,7 +13,6 @@ public class BossAgent : Agent
 
     public float ChaseSpeed = 15f;
     public float Acceleration = 0.5f;
-    public float SmashSpeed = 100f;
     public int Hp = 3;
     public int ShieldPoint = 1;
     public float AttackDelayTimer = 2f;
@@ -23,6 +23,11 @@ public class BossAgent : Agent
     public float randomTimer = 5f;
     private DistanceChecker distanceChecker;
     private bool canMoving = true;
+
+    public Collider AttackCollider;
+
+    public Image[] hpImages;
+    public GameObject ShieldMaterial;
 
     private void Start()
     {
@@ -64,16 +69,23 @@ public class BossAgent : Agent
 
     public IEnumerator Attack()
     {
+        AttackCollider.enabled = true;
         var endPos = PlayerSingleton.Instance.transform.position;
+        transform.LookAt(PlayerSingleton.Instance.transform);
         rb.DOMove(endPos, AttackDelayTimer);
         yield return new WaitForSeconds(AttackDelayTimer);
         canMoving = true;
+        AttackCollider.enabled = false;
     }
 
 
     public void TakeDamage(int damage)
     {
+        if (ShieldPoint > 0) return;
+        var hpImage = hpImages[Mathf.Abs(Hp - 3)]
+           .GetComponent<Image>();
         Hp = Mathf.Max(0, Hp - damage);
+        hpImage.DOColor(Color.gray, 0.5f);
         if (Hp <= 0)
         {
             Destroy(gameObject);
@@ -101,12 +113,9 @@ public class BossAgent : Agent
 
     public void ChaseMove()
     {
-        Debug.Log("chase move");
         transform.LookAt(PlayerSingleton.Instance.transform);
-
         var desiredVelocity = transform.forward * ChaseSpeed;
         rb.velocity = Vector3.Lerp(rb.velocity, desiredVelocity, Acceleration);
-        Debug.Log(rb.velocity);
     }
 
     public void BaseMove()
@@ -125,6 +134,21 @@ public class BossAgent : Agent
         else
         {
             return false;
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.GetComponent<FishController>())
+        {
+            //player get damage
+        }
+
+        if (other.GetComponent<Pillar>())
+        {
+            ShieldPoint--;
+            ShieldMaterial.gameObject.SetActive(false);
+            other.gameObject.SetActive(false);
         }
     }
 }
