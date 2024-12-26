@@ -28,6 +28,7 @@ public class BossAgent : Agent
 
     public Image[] hpImages;
     public GameObject ShieldMaterial;
+    public GameObject ShieldImage;
 
     private void Start()
     {
