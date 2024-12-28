@@ -10,8 +10,6 @@ public class Bomb : MonoBehaviour
     [SerializeField]
     private float explosionForce = 10f;
 
-    [SerializeField]
-    private float explosionDamage = 10f;
 
     [SerializeField]
     private float timeToExplode = 3f;
@@ -49,7 +47,6 @@ public class Bomb : MonoBehaviour
             {
                 var bossAgent = colliders[i].GetComponent<BossAgent>();
                 bossAgent.TakeDamage(1);
-
             }
         }
 

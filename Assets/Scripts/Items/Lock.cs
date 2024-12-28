@@ -4,15 +4,13 @@ using UnityEngine;
 
 public class Lock : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public int LockID = 0;
 
-    // Update is called once per frame
-    void Update()
+    public void CheckKey(int id)
     {
-        
+        if (id == LockID)
+        {
+            Destroy(gameObject);
+        }
     }
 }

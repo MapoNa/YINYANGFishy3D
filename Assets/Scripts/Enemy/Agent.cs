@@ -29,7 +29,7 @@ public class Agent : MonoBehaviour, IEatable
     private float turnInterval = 0f;
     private Quaternion targetRotation = Quaternion.identity;
 
-    public static event Action<float> OnEaten; // Action 
+    public static event Action<Agent> OnEaten; // Action 
 
     private void Start()
     {
@@ -85,7 +85,7 @@ public class Agent : MonoBehaviour, IEatable
         if (scale.x > transform.localScale.x)
         {
             //Eaten
-            OnEaten?.Invoke(YinYangEffect);
+            OnEaten?.Invoke(this);
 
             Destroy(gameObject);
         }

@@ -14,15 +14,16 @@ public class BombSpawner : MonoBehaviour
 
     private bool canSpawn = true;
 
-    [SerializeField]
-    private Material StopSpawningMaterial;
+    public Material StopSpawningMaterial;
+
+    public Transform SpawnPoint;
 
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.GetComponent<FishController>() && canSpawn)
         {
-            Instantiate(bombPrefab, transform.position, Quaternion.identity);
+            Instantiate(bombPrefab, SpawnPoint.position, Quaternion.identity);
             canSpawn = false;
             StopSpawningMaterial.DOColor(Color.red, 1f);
             StartCoroutine(SpanwTimer());

@@ -35,6 +35,8 @@ public class EatingFishManager : MonoBehaviour
                 if (col.GetComponent<Rigidbody>())
                 {
                     redBallRb = col.GetComponent<Rigidbody>();
+                    if (transform.localScale.x < redBallRb.transform.localScale.x)
+                        continue;
                     redBallRb.gameObject.transform.position = fishMouseTransform.position + transform.forward * 0.1f;
                     redBallRb.transform.parent = fishMouseTransform.transform;
                     SetBallToPlayer(redBallRb);
