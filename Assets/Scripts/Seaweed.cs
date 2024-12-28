@@ -3,37 +3,37 @@ using UnityEngine;
 
 public class Seaweed : MonoBehaviour
 {
-    public float growthRate = 0.1f;         // 每秒增长的比例
-    public float growthDuration = 10f;     // 水草从 0 长到初始体积所需的时间
-    public float eatShrinkFactor = 0.2f;   // 每次被吃掉后缩小的比例
-    public float minScale = 0.1f;          // 最小体积，低于此值会被销毁
-    public float nutritionValue = 0.05f;   // 吃掉水草时增加的营养值
-    public float yinYangEffect = 0.1f;     // 阴阳值的增减量（正数增加阳，负数增加阴）
+    public float growthRate = 0.1f;         // 脙驴脙毛脭枚鲁陇碌脛卤脠脌媒
+    public float growthDuration = 10f;     // 脣庐虏脻麓脫 0 鲁陇碌陆鲁玫脢录脤氓禄媒脣霉脨猫碌脛脢卤录盲
+    public float eatShrinkFactor = 0.2f;   // 脙驴麓脦卤禄鲁脭碌么潞贸脣玫脨隆碌脛卤脠脌媒
+    public float minScale = 0.1f;          // 脳卯脨隆脤氓禄媒拢卢碌脥脫脷麓脣脰碌禄谩卤禄脧煤禄脵
+    public float nutritionValue = 0.05f;   // 鲁脭碌么脣庐虏脻脢卤脭枚录脫碌脛脫陋脩酶脰碌
+    public float yinYangEffect = 0.1f;     // 脪玫脩么脰碌碌脛脭枚录玫脕驴拢篓脮媒脢媒脭枚录脫脩么拢卢赂潞脢媒脭枚录脫脪玫拢漏
 
-    private Vector3 initialScale;          // 初始体积
-    public bool isRegrowing = false;      // 水草是否正在重生
+    private Vector3 initialScale;          // 鲁玫脢录脤氓禄媒
+    public bool isRegrowing = false;      // 脣庐虏脻脢脟路帽脮媒脭脷脰脴脡煤
 
     private void Start()
     {
-        initialScale = transform.localScale; // 记录水草初始体积
+        initialScale = transform.localScale; // 录脟脗录脣庐虏脻鲁玫脢录脤氓禄媒
     }
 
     private void Update()
     {
         if (isRegrowing)
         {
-            Regrow(); // 在重生时生长
+            Regrow(); // 脭脷脰脴脡煤脢卤脡煤鲁陇
         }
     }
 
     public void OnEaten()
     {
-        if (isRegrowing) return; // 如果正在重生，不处理
+        if (isRegrowing) return; // 脠莽鹿没脮媒脭脷脰脴脡煤拢卢虏禄麓娄脌铆
 
-        // 缩小水草体积
+        // 脣玫脨隆脣庐虏脻脤氓禄媒
         transform.localScale -= initialScale * eatShrinkFactor;
 
-        // 如果水草体积过小，触发重生
+        // 脠莽鹿没脣庐虏脻脤氓禄媒鹿媒脨隆拢卢麓楼路垄脰脴脡煤
         if (transform.localScale.x < initialScale.x * minScale)
         {
             StartCoroutine(StartRegrowth());
@@ -43,15 +43,15 @@ public class Seaweed : MonoBehaviour
     private IEnumerator StartRegrowth()
     {
         isRegrowing = true;
-        transform.localScale = Vector3.zero; // 将体积重置为 0
-        yield return new WaitForSeconds(growthDuration); // 等待重生时间
+        transform.localScale = Vector3.zero; // 陆芦脤氓禄媒脰脴脰脙脦陋 0
+        yield return new WaitForSeconds(growthDuration); // 碌脠麓媒脰脴脡煤脢卤录盲
         isRegrowing = false;
-        transform.localScale = initialScale; // 恢复初始体积
+        transform.localScale = initialScale; // 禄脰赂麓鲁玫脢录脤氓禄媒
     }
 
     private void Regrow()
     {
-        // 按比例生长，直到恢复初始体积
+        // 掳麓卤脠脌媒脡煤鲁陇拢卢脰卤碌陆禄脰赂麓鲁玫脢录脤氓禄媒
         transform.localScale = Vector3.Lerp(transform.localScale, initialScale, growthRate * Time.deltaTime);
     }
 }
