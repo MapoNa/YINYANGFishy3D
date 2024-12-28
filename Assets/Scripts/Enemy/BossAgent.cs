@@ -30,6 +30,9 @@ public class BossAgent : Agent
     public GameObject ShieldMaterial;
     public GameObject ShieldImage;
 
+    public GameObject KeyPrefab;
+    public Wall WallPrefab;
+
     private void Start()
     {
         animatorAI = GetComponent<Animator>();
@@ -89,6 +92,7 @@ public class BossAgent : Agent
         hpImage.DOColor(Color.gray, 0.5f);
         if (Hp <= 0)
         {
+            Instantiate(KeyPrefab, transform.position, Quaternion.identity);
             Destroy(gameObject);
         }
     }
@@ -128,6 +132,7 @@ public class BossAgent : Agent
 
     public bool DetectedPlayer()
     {
+        if (WallPrefab) return false;
         if (distanceChecker.DistanceFromPlayer() < DetectPlayerDistance)
         {
             return true;

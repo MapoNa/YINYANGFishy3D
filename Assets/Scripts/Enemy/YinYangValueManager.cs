@@ -22,8 +22,8 @@ public class YinYangValueManager : MonoBehaviour
         fishController = GetComponent<FishController>();
     }
 
-    private void OnEaten(float yinYangEffect)
+    private void OnEaten(Agent agentFish)
     {
-        fishController.yinYangValue += yinYangEffect;
+        fishController.yinYangValue += agentFish.YinYangEffect;
     }
 }

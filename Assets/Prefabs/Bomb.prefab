@@ -93,7 +93,7 @@ HingeJoint:
   m_GameObject: {fileID: 417987752317852595}
   m_ConnectedBody: {fileID: 466552015897900554}
   m_ConnectedArticulationBody: {fileID: 0}
-  m_Anchor: {x: 0, y: 0, z: 0}
+  m_Anchor: {x: 0, y: 0.25, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
   m_ConnectedAnchor: {x: 0, y: 0, z: 0}
@@ -357,7 +357,7 @@ HingeJoint:
   m_GameObject: {fileID: 2180558834145899523}
   m_ConnectedBody: {fileID: 7462395919147611912}
   m_ConnectedArticulationBody: {fileID: 0}
-  m_Anchor: {x: 0, y: 0, z: 0}
+  m_Anchor: {x: 0, y: 0.25, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
   m_ConnectedAnchor: {x: 0, y: 0, z: 0}
@@ -480,7 +480,7 @@ HingeJoint:
   m_GameObject: {fileID: 2435228692662823982}
   m_ConnectedBody: {fileID: 5958938782675957149}
   m_ConnectedArticulationBody: {fileID: 0}
-  m_Anchor: {x: 0, y: 0, z: 0}
+  m_Anchor: {x: 0, y: 0.25, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
   m_ConnectedAnchor: {x: 0, y: 0, z: 0}
@@ -603,7 +603,7 @@ HingeJoint:
   m_GameObject: {fileID: 5354890609594579462}
   m_ConnectedBody: {fileID: 8919964013935483668}
   m_ConnectedArticulationBody: {fileID: 0}
-  m_Anchor: {x: 0, y: 0, z: 0}
+  m_Anchor: {x: 0, y: 0.25, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
   m_ConnectedAnchor: {x: 0, y: 0, z: 0}
@@ -726,7 +726,7 @@ HingeJoint:
   m_GameObject: {fileID: 6376300496974502475}
   m_ConnectedBody: {fileID: 2965484140344209175}
   m_ConnectedArticulationBody: {fileID: 0}
-  m_Anchor: {x: 0, y: 0, z: 0}
+  m_Anchor: {x: 0, y: 0.25, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
   m_ConnectedAnchor: {x: 0, y: 0, z: 0}
@@ -849,7 +849,7 @@ HingeJoint:
   m_GameObject: {fileID: 8819616473405124010}
   m_ConnectedBody: {fileID: 3407954701375967579}
   m_ConnectedArticulationBody: {fileID: 0}
-  m_Anchor: {x: 0, y: 0, z: 0}
+  m_Anchor: {x: 0, y: 0.25, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
   m_ConnectedAnchor: {x: 0, y: 0, z: 0}
@@ -1318,9 +1318,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97e9bc6cbb786d04bb8f3d513f299ee1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  explosionRadius: 5
-  explosionForce: 500
-  explosionDamage: 10
+  explosionRadius: 4
+  explosionForce: 100
   timeToExplode: 10
   explosionLayer:
     serializedVersion: 2
