@@ -19,6 +19,7 @@ public class EatingFishManager : MonoBehaviour
     private Transform fishMouseTransform;
 
     private Rigidbody redBallRb;
+    public AudioSource EatingSound;
 
     private void Start()
     {
@@ -67,6 +68,7 @@ public class EatingFishManager : MonoBehaviour
 
     private void SetBallToPlayer(Rigidbody rb)
     {
+        EatingSound.PlayOneShot(EatingSound.clip);
         joint.connectedBody = rb;
     }
 

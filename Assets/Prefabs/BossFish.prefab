@@ -5301,7 +5301,7 @@ MonoBehaviour:
   Acceleration: 1
   Hp: 3
   ShieldPoint: 1
-  AttackDelayTimer: 0.5
+  AttackDelayTimer: 1
   DetectPlayerDistance: 5
   TimeBetweenAttacks: {x: 3, y: 5}
   randomTimer: 5
@@ -5313,6 +5313,7 @@ MonoBehaviour:
   ShieldMaterial: {fileID: 5012311706674443847}
   ShieldImage: {fileID: 1796370653108005709}
   KeyPrefab: {fileID: 6690450455473148198, guid: b4ab3b15ec3576c4ebabcf36df96ae23, type: 3}
+  WallPrefab: {fileID: 0}
 --- !u!1 &6923309769221060762
 GameObject:
   m_ObjectHideFlags: 0
