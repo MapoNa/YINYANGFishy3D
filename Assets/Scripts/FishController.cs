@@ -73,6 +73,8 @@ public class FishController : MonoBehaviour
 
     private bool canEat = true;
 
+    public AudioSource EatAudioSource;
+
     private void FixedUpdate()
     {
         HandleSplashEffect();
@@ -258,11 +260,11 @@ public class FishController : MonoBehaviour
         {
             // ²éÕÒËùÓÐ¾ßÓÐ "RedBall" ±êÇ©µÄ¶ÔÏó
             GameObject[] redBalls = GameObject.FindGameObjectsWithTag("RedBall");
-    
+
             foreach (GameObject redBall in redBalls)
             {
                 float distance = Vector3.Distance(transform.position, redBall.transform.position);
-    
+
                 // Èç¹ûºìÇòÔÚ¸½½ü£¬½«ÆäÒÆ¶¯µ½ÓãµÄÎ»ÖÃ
                 if (distance < 1f) // ¿É¸ù¾ÝÐèÇóµ÷Õû¾àÀë·¶Î§
                 {
@@ -272,19 +274,19 @@ public class FishController : MonoBehaviour
                     {
                         redBallCollider.enabled = false;
                     }
-    
+
                     // ½«ºìÇòµÄÎ»ÖÃÉèÖÃÎªÓãµÄÎ»ÖÃ
                     redBall.transform.position = EatPoint.transform.position;
-    
+
                     // ¼ì²éºìÇòÓëÃÅµÄ¾àÀë
                     if (Door1 != null) // È·±£ Door1 ÒÑ·ÖÅä
                     {
                         float parentDistance = Vector3.Distance(Door1.transform.position, redBall.transform.position);
-    
+
                         if (parentDistance > maxDistance) // ³¬¹ý×î´ó¾àÀë
                         {
                             Debug.Log("Ê©¼ÓÀ­Á¦");
-    
+
                             Rigidbody doorRb = Door1.GetComponent<Rigidbody>();
                             if (doorRb != null)
                             {
@@ -298,18 +300,18 @@ public class FishController : MonoBehaviour
                                 Debug.LogWarning("Door1 Ã»ÓÐ Rigidbody ×é¼þ£¡");
                             }
                         }
-    
+
                         // ÏÞÖÆÍæ¼ÒÎ»ÖÃ
                         float playerDistance = Vector3.Distance(Door1Point.transform.position, transform.position);
                         if (playerDistance > maxDistance)
                         {
                             Debug.Log("ÏÞÖÆÍæ¼ÒÎ»ÖÃ");
-    
+
                             Vector3 restrictedPosition = Door1Point.transform.position +
                                                          (transform.position - Door1Point.transform.position)
                                                         .normalized *
                                                          (maxDistance);
-    
+
                             // Ö»ÔÚ³¬¹ý·¶Î§Ê±ÐÞÕýÎ»ÖÃ
                             transform.position = Vector3.MoveTowards(transform.position, restrictedPosition,
                                                                      playerDistance - (maxDistance));
@@ -322,7 +324,7 @@ public class FishController : MonoBehaviour
         {
             // Èç¹û²»ÔÚ½øÊ³×´Ì¬£¬ÖØÐÂÆôÓÃÅö×²Æ÷
             GameObject[] redBalls = GameObject.FindGameObjectsWithTag("RedBall");
-    
+
             foreach (GameObject redBall in redBalls)
             {
                 Collider redBallCollider = redBall.GetComponent<Collider>();
@@ -405,6 +407,7 @@ public class FishController : MonoBehaviour
         if (Input.GetMouseButtonUp(0)) // ËÉ¿ª×ó¼ü
         {
             TriggerEatFood();
+            EatAudioSource.PlayOneShot(EatAudioSource.clip);
         }
 
         if (isEating == true)

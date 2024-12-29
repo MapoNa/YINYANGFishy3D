@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,9 +18,15 @@ public class Bomb : MonoBehaviour
     [SerializeField]
     private LayerMask explosionLayer;
 
+    private AudioSource beep;
+    public GameObject explodePrefab;
+    public Transform ExplodeTransform;
+    public static event Action OnBombExplode;
+
     private void Start()
     {
-        InvokeRepeating("Explode", timeToExplode, timeToExplode);
+        Invoke("Explode", timeToExplode);
+        beep = GetComponent<AudioSource>();
     }
 
     public void Explode()
@@ -48,8 +55,21 @@ public class Bomb : MonoBehaviour
                 var bossAgent = colliders[i].GetComponent<BossAgent>();
                 bossAgent.TakeDamage(1);
             }
+
+            if (colliders[i].GetComponent<PlayerSingleton>())
+            {
+                var player = colliders[i].GetComponent<PlayerSingleton>();
+                player.IsAlive = false;
+            }
         }
 
-        Destroy(transform.parent.gameObject);
+        Instantiate(explodePrefab, ExplodeTransform.transform.position, Quaternion.identity);
+        OnBombExplode?.Invoke();
+        Destroy(transform.gameObject);
+    }
+
+    public void PlayBeep()
+    {
+        beep.PlayOneShot(beep.clip);
     }
 }

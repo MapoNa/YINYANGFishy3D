@@ -31,7 +31,7 @@ public class Agent : MonoBehaviour, IEatable
 
     public static event Action<Agent> OnEaten; // Action 
 
-    private void Start()
+    private void Awake()
     {
         // Get reference to the Rigidbody component
         rb = GetComponent<Rigidbody>();

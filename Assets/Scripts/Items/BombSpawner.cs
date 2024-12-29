@@ -18,14 +18,16 @@ public class BombSpawner : MonoBehaviour
 
     public Transform SpawnPoint;
 
+    public Transform Pannel;
+
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.GetComponent<FishController>() && canSpawn)
         {
-            Instantiate(bombPrefab, SpawnPoint.position, Quaternion.identity);
+            var bomb = Instantiate(bombPrefab, Pannel.transform.position, Quaternion.identity);
             canSpawn = false;
-            StopSpawningMaterial.DOColor(Color.red, 1f);
+            StopSpawningMaterial.DOColor(Color.red, 0.5f);
             StartCoroutine(SpanwTimer());
         }
     }
@@ -34,6 +36,6 @@ public class BombSpawner : MonoBehaviour
     {
         yield return new WaitForSeconds(spawnInterval);
         canSpawn = true;
-        StopSpawningMaterial.DOColor(Color.green, 1f);
+        StopSpawningMaterial.DOColor(Color.green, 0.5f);
     }
 }

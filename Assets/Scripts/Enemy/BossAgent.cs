@@ -37,7 +37,6 @@ public class BossAgent : Agent
     {
         animatorAI = GetComponent<Animator>();
         distanceChecker = GetComponent<DistanceChecker>();
-        rb = GetComponent<Rigidbody>();
     }
 
     private float RandomTimer()
