@@ -12,6 +12,9 @@ public class Key : MonoBehaviour
         if (other.gameObject.GetComponent<Lock>())
         {
             var lockObj = other.gameObject.GetComponent<Lock>();
+            {
+                
+            }
             if (lockObj.LockID == keyID)
             {
                 lockObj.CheckKey(keyID);

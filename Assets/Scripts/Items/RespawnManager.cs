@@ -1,19 +1,19 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class RespawnManager : MonoBehaviour
 {
-    // Update is called once per frame
-    void Update()
+    private void OnEnable()
     {
-        CheckPlayerAlive();
+        PlayerSingleton.Instance.OnRespawn += RespawnPlayer;
     }
 
-    private void CheckPlayerAlive()
+    private void OnDisable()
     {
-        if (PlayerSingleton.Instance.IsAlive) return;
+        PlayerSingleton.Instance.OnRespawn -= RespawnPlayer;
+    }
+
+    private void RespawnPlayer()
+    {
         PlayerSingleton.Instance.transform.position = transform.position;
-        PlayerSingleton.Instance.IsAlive = true;
     }
 }
