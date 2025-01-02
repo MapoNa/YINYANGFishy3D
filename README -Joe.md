@@ -1,43 +1,116 @@
 # YINYANGFishy3D
-IS71030D: GAMES PROGRAMMING 1 (2024-25)
-Developer: Yufei Liu
-Student ID: 33705656
-Submission Date: December 21, 2024
-Declaration: All content in this version was independently completed by Yufei Liu.
+Developer: Joe
+Student ID: 
+Submission Date: December 30, 2024
+Declaration: All content in this version was independently completed by Joe.
+
 Independently Completed Features
 Core Features
-Player Movement and Control:
+Enemy Fish AI:
 
-Implemented fish movement using Rigidbody.velocity, supporting smooth turning.
-Added jump and dive mechanics, with jump force dynamically influenced by dive depth.
-Dynamically adjusted movement speed under extreme Yin-Yang values.
-Camera Smooth Follow:
+1.Developed a simple AI system for enemy fish, driven by Rigidbody components.
 
-Designed a dynamic camera follow system with synchronized rotation and offset adjustment.
-Player Interaction:
+	Implemented random movement and rotation, with direction changes occurring every few seconds.
 
-Enabled interaction with seaweed to adjust Yin-Yang values and scale, ignoring interactions with regrowing seaweed.
-Designed interaction logic for collectible items, prioritizing the closest item and maintaining a collection count.
-Physics and Visual Enhancements
-Yin-Yang Mechanic:
+	Ensured that enemy fish behavior appeared natural and unpredictable.
 
-Dynamically adjusted Yin-Yang values based on lighting conditions.
-Added red flashing effect to the fish material as a warning when Yin-Yang values reach critical levels.
-Particle Effects:
+2.Enemy Fish Spawner:
 
-Triggered particle effects for leaving and entering water based on the fish's vertical position.
-Fish Model and Animation:
+	Set a maximum spawn limit for enemy fish.
 
-Created swimming animations for the fish model.
-Scaling Optimization:
+	Continuously monitored the fish count and spawned enemy fish prefabs at 5-second intervals.
 
-Adjusted only the parent object's scale during size changes to avoid affecting child objects.
-Level Design
-Gameplay Mechanics:
+	Randomized fish colors (yellow, blue, red) and adjusted local scales to enhance diversity.
 
-Designed levels based on bomb-wall mechanics, item collection, and cork unlocking.
-Implemented door interaction using red ball mechanics with dynamic pull force and range adjustments.
-Interaction Optimization:
+3.Boss Fish AI:
 
-Fixed collision jitter issues during player-object interactions.
-Prevented the fish model from interfering with shadow detection logic.
+	Created a sophisticated AI for the boss fish, including idle, chasing, and attack states.
+
+	Utilized Rigidbody for natural movement and state transitions based on player proximity.
+
+4.Boss Fish Animation:
+
+	Designed animations for idle, chasing, and attack behaviors using Unity's animation component.
+
+	Triggered specific animations based on the boss fish's state.
+
+	Implemented animation events to control the timing of attack collisions.
+
+5.Boss Interaction:
+
+	Added collision detection for boss attacks on pillars using OnCollisionEnter.
+
+	Ensured that boss attacks had appropriate impact on the environment.
+
+6.Interactive Items:
+
+	Physics Rope: 
+	Created using Unity’s Hinge Joint component for realistic simulation.
+
+    	Bomb: 
+	Utilized Physics.OverlapSphereNonAlloc to detect nearby items.
+
+	Distinguished between players and bosses, executing specific functions upon detection.
+
+	Controlled sound effects using animation events for a polished experience.
+
+	Key & Lock:
+	Assigned unique IDs to keys and locks.
+
+	Implemented collision detection to verify matching IDs and destroy locks accordingly.
+
+7.Eating Fish Mechanic:
+
+	Enabled player to eat smaller fish by using Physics.OverlapSphereNonAlloc to detect nearby fish.
+
+	Increased the player's YinYang value upon successful consumption.
+
+8.Player Death Logic:
+
+	Disabled the player controller upon death, followed by a 3-second respawn delay.
+
+	Ensured the player respawned at the designated birth place.
+
+9.Dead UI Animation:
+
+	Created an animation for the death UI to visually indicate player death.
+
+	Triggered this UI and animation upon player death.
+
+10.Winning Logic:
+
+	Added logic to play a sound effect and display the win UI upon reaching the final position.
+
+	Provided a satisfying conclusion to the player's journey.
+
+11.Pause Menu:
+
+	Implemented a pause menu to control game time using Time.timeScale.
+	
+	Allowed the player to pause and resume the game using the ESC key or pause UI.
+
+12.Main Menu:
+
+	Developed the main menu scene with a start game function.
+	
+	Created a scene load manager to handle scene transitions seamlessly.
+
+13.Post-processing Enhancements:
+
+	Improved visual quality with post-processing effects including bloom, depth of field, and color grading.
+
+	Enhanced the overall aesthetic and atmosphere of the game.
+
+14.Sound Effects:
+
+	Added sound effects for eating, bomb, and left-click interactions.
+
+	Enhanced the auditory experience to make the game more immersive.
+
+Reference videos:
+https://www.youtube.com/watch?v=ZlYo_-gyJzA
+https://www.youtube.com/watch?v=OuZrhykVytg&t=167s
+https://www.youtube.com/watch?v=nbxiqHCsYFg
+https://www.youtube.com/watch?v=Zzklpdvue3A
+https://www.youtube.com/watch?v=MElbAwhMvTc
+https://www.youtube.com/watch?v=Z2hD0WxCFak
