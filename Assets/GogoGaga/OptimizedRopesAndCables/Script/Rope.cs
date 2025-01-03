@@ -15,15 +15,23 @@ namespace GogoGaga.OptimizedRopesAndCables
         [Header("Rope Transforms")]
         [Tooltip("The rope will start at this point")]
         [SerializeField] private Transform startPoint;
+
         public Transform StartPoint => startPoint;
 
         [Tooltip("This will move at the center hanging from the rope, like a necklace, for example")]
         [SerializeField] private Transform midPoint;
+
         public Transform MidPoint => midPoint;
 
         [Tooltip("The rope will end at this point")]
         [SerializeField] private Transform endPoint;
-        public Transform EndPoint => endPoint;
+
+        public Transform EndPoint
+        {
+            get => endPoint;
+
+            set => endPoint = value;
+        }
 
         [Header("Rope Settings")]
         [Tooltip("How many points should the rope have, 2 would be a triangle with straight lines, 100 would be a very flexible rope with many parts")]
@@ -44,7 +52,11 @@ namespace GogoGaga.OptimizedRopesAndCables
         [Header("Rational Bezier Weight Control")]
         [Tooltip("Adjust the middle control point weight for the Rational Bezier curve")]
         [Range(1, 15)] public float midPointWeight = 1f;
-        private const float StartPointWeight = 1f; //these need to stay at 1, could be removed but makes calling the rational bezier function easier to read and understand
+
+        private const float
+            StartPointWeight =
+                1f; //these need to stay at 1, could be removed but makes calling the rational bezier function easier to read and understand
+
         private const float EndPointWeight = 1f;
 
         [Header("Midpoint Position")]
@@ -71,10 +83,10 @@ namespace GogoGaga.OptimizedRopesAndCables
         private float prevstiffness;
         private float prevDampness;
         private float prevRopeLength;
-        
-        
+
+
         public bool IsPrefab => gameObject.scene.rootCount == 0;
-        
+
         private void Start()
         {
             InitializeLineRenderer();
@@ -121,7 +133,7 @@ namespace GogoGaga.OptimizedRopesAndCables
             {
                 return;
             }
-            
+
             if (AreEndPointsValid())
             {
                 SetSplinePoint();
@@ -163,12 +175,15 @@ namespace GogoGaga.OptimizedRopesAndCables
 
             if (midPoint != null)
             {
-                midPoint.position = GetRationalBezierPoint(startPoint.position, mid, endPoint.position, midPointPosition, StartPointWeight, midPointWeight, EndPointWeight);
+                midPoint.position = GetRationalBezierPoint(startPoint.position, mid, endPoint.position,
+                                                           midPointPosition, StartPointWeight, midPointWeight,
+                                                           EndPointWeight);
             }
 
             for (int i = 0; i < linePoints; i++)
             {
-                Vector3 p = GetRationalBezierPoint(startPoint.position, mid, endPoint.position, i / (float)linePoints, StartPointWeight, midPointWeight, EndPointWeight);
+                Vector3 p = GetRationalBezierPoint(startPoint.position, mid, endPoint.position, i / (float)linePoints,
+                                                   StartPointWeight, midPointWeight, EndPointWeight);
                 lineRenderer.SetPosition(i, p);
             }
 
@@ -178,7 +193,9 @@ namespace GogoGaga.OptimizedRopesAndCables
         private float CalculateYFactorAdjustment(float weight)
         {
             //float k = 0.360f; //after testing this seemed to be a good value for most cases, more accurate k is available.
-            float k = Mathf.Lerp(0.493f, 0.323f, Mathf.InverseLerp(1, 15, weight)); //K calculation that is more accurate, interpolates between precalculated values.
+            float k = Mathf.Lerp(0.493f, 0.323f,
+                                 Mathf.InverseLerp(1, 15,
+                                                   weight)); //K calculation that is more accurate, interpolates between precalculated values.
             float w = 1f + k * Mathf.Log(weight);
             return w;
         }
@@ -188,12 +205,15 @@ namespace GogoGaga.OptimizedRopesAndCables
             Vector3 startPointPosition = startPoint.position;
             Vector3 endPointPosition = endPoint.position;
             Vector3 midpos = Vector3.Lerp(startPointPosition, endPointPosition, midPointPosition);
-            float yFactor = (ropeLength - Mathf.Min(Vector3.Distance(startPointPosition, endPointPosition), ropeLength)) / CalculateYFactorAdjustment(midPointWeight);
+            float yFactor =
+                (ropeLength - Mathf.Min(Vector3.Distance(startPointPosition, endPointPosition), ropeLength)) /
+                CalculateYFactorAdjustment(midPointWeight);
             midpos.y -= yFactor;
             return midpos;
         }
 
-        private Vector3 GetRationalBezierPoint(Vector3 p0, Vector3 p1, Vector3 p2, float t, float w0, float w1, float w2)
+        private Vector3 GetRationalBezierPoint(Vector3 p0, Vector3 p1, Vector3 p2, float t, float w0, float w1,
+                                               float w2)
         {
             //scale each point by its weight (can probably remove w0 and w2 if the midpoint is the only adjustable weight)
             Vector3 wp0 = w0 * p0;
@@ -216,7 +236,8 @@ namespace GogoGaga.OptimizedRopesAndCables
                 return Vector3.zero;
             }
 
-            return GetRationalBezierPoint(startPoint.position, currentValue, endPoint.position, t, StartPointWeight, midPointWeight, EndPointWeight);
+            return GetRationalBezierPoint(startPoint.position, currentValue, endPoint.position, t, StartPointWeight,
+                                          midPointWeight, EndPointWeight);
         }
 
         private void FixedUpdate()
@@ -225,7 +246,7 @@ namespace GogoGaga.OptimizedRopesAndCables
             {
                 return;
             }
-            
+
             if (AreEndPointsValid())
             {
                 if (!isFirstFrame)
@@ -244,7 +265,8 @@ namespace GogoGaga.OptimizedRopesAndCables
             currentVelocity = currentVelocity * dampingFactor + acceleration + otherPhysicsFactors;
             currentValue += currentVelocity * Time.fixedDeltaTime;
 
-            if (Vector3.Distance(currentValue, targetValue) < valueThreshold && currentVelocity.magnitude < velocityThreshold)
+            if (Vector3.Distance(currentValue, targetValue) < valueThreshold &&
+                currentVelocity.magnitude < velocityThreshold)
             {
                 currentValue = targetValue;
                 currentVelocity = Vector3.zero;
@@ -279,18 +301,20 @@ namespace GogoGaga.OptimizedRopesAndCables
 
             NotifyPointsChanged();
         }
+
         public void SetMidPoint(Transform newMidPoint, bool instantAssign = false)
         {
             midPoint = newMidPoint;
             prevMidPointPosition = midPoint == null ? 0.5f : midPointPosition;
-            
+
             if (instantAssign || newMidPoint == null)
             {
                 RecalculateRope();
             }
+
             NotifyPointsChanged();
         }
-        
+
         public void SetEndPoint(Transform newEndPoint, bool instantAssign = false)
         {
             endPoint = newEndPoint;
@@ -341,12 +365,12 @@ namespace GogoGaga.OptimizedRopesAndCables
             var midPointWeightChanged = !Mathf.Approximately(midPointWeight, prevMidPointWeight);
 
             return lineQualityChanged
-                   || ropeWidthChanged
-                   || stiffnessChanged
-                   || dampnessChanged
-                   || ropeLengthChanged
-                   || midPointPositionChanged
-                   || midPointWeightChanged;
+                || ropeWidthChanged
+                || stiffnessChanged
+                || dampnessChanged
+                || ropeLengthChanged
+                || midPointPositionChanged
+                || midPointWeightChanged;
         }
     }
 }
