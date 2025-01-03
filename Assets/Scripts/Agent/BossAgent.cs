@@ -76,6 +76,7 @@ public class BossAgent : Agent
         var endPos = PlayerSingleton.Instance.transform.position;
         transform.LookAt(PlayerSingleton.Instance.transform);
         rb.DOMove(endPos, AttackDelayTimer);
+
         yield return new WaitForSeconds(AttackDelayTimer);
         canMoving = true;
         AttackCollider.enabled = false;
@@ -144,22 +145,19 @@ public class BossAgent : Agent
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.GetComponent<FishController>())
-        {
-            //player get damage
-        }
-
         if (other.GetComponent<Pillar>())
         {
             ShieldPoint--;
             ShieldMaterial.gameObject.SetActive(false);
             ShieldImage.gameObject.SetActive(false);
             other.gameObject.SetActive(false);
+            DOTween.Kill(rb);
         }
 
         if (other.GetComponent<FishController>())
         {
             PlayerSingleton.Instance.IsAlive = false;
+            PlayerSingleton.Instance.CheckPlayerAlive();
         }
     }
 }
