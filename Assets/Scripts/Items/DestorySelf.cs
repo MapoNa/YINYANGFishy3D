@@ -8,6 +8,7 @@ public class DestorySelf : MonoBehaviour
 
     private void Start()
     {
+        //Destory the object after the specified time
         Destroy(gameObject, destroyTime);
     }
 }

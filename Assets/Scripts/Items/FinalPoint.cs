@@ -10,9 +10,12 @@ public class FinalPoint : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        // Check if the object that entered the trigger is a FishController
         if (other.GetComponent<FishController>())
         {
+            // Activate the FinalPointUI and play the FinalPointSound
             FinalPointUI.SetActive(true);
+            // Play the FinalPointSound
             FinalPointSound.PlayOneShot(FinalPointSound.clip);
         }
     }
