@@ -19,6 +19,9 @@ public class EatingFishManager : MonoBehaviour
     private Transform fishMouseTransform; // Transform of the fish mouse
 
     private Rigidbody redBallRb; // Reference to the red ball's rigidbody
+    private Collider redBallCollider; // Reference to the red ball's collider
+    private Collider playerCollider; // Reference to the player's collider
+    private List<Collider> redBallChildColliders = new List<Collider>(); // List of child colliders of the red ball
     public AudioSource EatingSound; // Reference to the audio source for eating sound
 
     private void Start()
@@ -27,6 +30,13 @@ public class EatingFishManager : MonoBehaviour
         fishController = GetComponent<FishController>();
         // Get the FixedJoint component on the fish mouse transform
         joint = fishMouseTransform.GetComponent<FixedJoint>();
+
+        // Get the player's collider
+        playerCollider = GetComponent<Collider>();
+        if (playerCollider == null)
+        {
+            Debug.LogError("Player collider not found!");
+        }
     }
 
     private void Update()
@@ -42,15 +52,24 @@ public class EatingFishManager : MonoBehaviour
                 {
                     // Get the Rigidbody component
                     redBallRb = col.GetComponent<Rigidbody>();
+                    redBallCollider = col.GetComponent<Collider>(); // Cache the collider
+
                     // Check if the object's scale is smaller than the red ball's scale
                     if (transform.localScale.x < redBallRb.transform.localScale.x)
                         continue;
+
                     // Move the red ball to the fish mouse position
                     redBallRb.gameObject.transform.position = fishMouseTransform.position + transform.forward * 0.1f;
+
                     // Set the red ball as a child of the fish mouse transform
                     redBallRb.transform.parent = fishMouseTransform.transform;
+
+                    // Ignore collision between the player and the red ball, including its children
+                    IgnoreCollisionWithChildren(redBallCollider);
+
                     // Set the red ball to the player
                     SetBallToPlayer(redBallRb);
+
                     // Log a message with the name of the red ball
                     Debug.Log("Finding a red ball" + redBallRb.gameObject.name);
                     break;
@@ -92,16 +111,59 @@ public class EatingFishManager : MonoBehaviour
 
     private void RemoveBallFromPlayer()
     {
+        // Re-enable collision between the player and the red ball, including its children
+        ReEnableCollisionWithChildren();
+
         // Remove the red ball from the player
         redBallRb.transform.parent = null;
         joint.connectedBody = null;
+        redBallRb = null;
+        redBallCollider = null;
+        redBallChildColliders.Clear();
     }
 
     private List<Collider> GetColliders()
     {
         // Get all colliders within a small radius around the fish mouse transform
-        var coliders = Physics.OverlapSphere(fishMouseTransform.position, 0.1f, eatableLayer);
+        var colliders = Physics.OverlapSphere(fishMouseTransform.position, 0.1f, eatableLayer);
 
-        return new List<Collider>(coliders);
+        return new List<Collider>(colliders);
+    }
+
+    private void IgnoreCollisionWithChildren(Collider parentCollider)
+    {
+        // Ignore collision between the player and the parent collider
+        if (parentCollider != null && playerCollider != null)
+        {
+            Physics.IgnoreCollision(parentCollider, playerCollider, true);
+        }
+
+        // Get all child colliders and ignore collision
+        redBallChildColliders = new List<Collider>(parentCollider.GetComponentsInChildren<Collider>());
+        foreach (var childCollider in redBallChildColliders)
+        {
+            if (playerCollider != null)
+            {
+                Physics.IgnoreCollision(childCollider, playerCollider, true);
+            }
+        }
+    }
+
+    private void ReEnableCollisionWithChildren()
+    {
+        // Re-enable collision between the player and the parent collider
+        if (redBallCollider != null && playerCollider != null)
+        {
+            Physics.IgnoreCollision(redBallCollider, playerCollider, false);
+        }
+
+        // Re-enable collision between the player and all child colliders
+        foreach (var childCollider in redBallChildColliders)
+        {
+            if (playerCollider != null)
+            {
+                Physics.IgnoreCollision(childCollider, playerCollider, false);
+            }
+        }
     }
 }

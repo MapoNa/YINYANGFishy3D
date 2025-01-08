@@ -83,7 +83,7 @@ public class BossAgent : Agent
         AttackCollider.enabled = true;
         var endPos = PlayerSingleton.Instance.transform.position;
         transform.LookAt(PlayerSingleton.Instance.transform);
-        rb.DOMove(endPos, AttackDelayTimer);
+        rb.DOMove(endPos, AttackDelayTimer + 1f);
 
         yield return new WaitForSeconds(AttackDelayTimer);
         canMoving = true;

@@ -12,7 +12,7 @@ public class EnemyFishSpawnManager : MonoBehaviour
     public int FishCount = 10; // Number of fish to spawn
     public float SpawnInterval = 5f; // Interval between fish spawns
     public List<Agent> FishList = new List<Agent>(); // List of spawned fish
-    private float spawnTimer = 0f; // Timer for spawning fish
+    private float spawnTimer = 2f; // Timer for spawning fish
 
     private void OnEnable()
     {

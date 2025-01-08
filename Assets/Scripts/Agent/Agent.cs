@@ -84,12 +84,21 @@ public class Agent : MonoBehaviour, IEatable
     {
         if (scale.x > transform.localScale.x)
         {
-            //Eaten
+            // Eaten: Trigger the OnEaten event
             OnEaten?.Invoke(this);
 
+            // Find the player and increase its scale
+            var player = PlayerSingleton.Instance; // Assuming PlayerSingleton is managing the player
+            if (player != null)
+            {
+                player.transform.localScale += Vector3.one * 0.1f; // Increase the player's scale uniformly
+            }
+
+            // Destroy this game object
             Destroy(gameObject);
         }
     }
+
     virtual protected void StartAttack()
     {
        

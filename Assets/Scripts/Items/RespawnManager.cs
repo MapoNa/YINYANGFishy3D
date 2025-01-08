@@ -18,5 +18,6 @@ public class RespawnManager : MonoBehaviour
     {
         // Respawn the player at the current position
         PlayerSingleton.Instance.transform.position = transform.position;
+        PlayerSingleton.Instance.transform.localScale = new Vector3(0.6f, 0.6f, 0.6f);
     }
 }

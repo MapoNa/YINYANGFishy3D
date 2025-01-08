@@ -8,7 +8,7 @@ using Random = UnityEngine.Random;
 public class FishAgent : Agent
 {
     // Define the size range of the fish
-    public Vector2 SizeRange = new Vector2() { x = 0.5f, y = 1.5f };
+    public Vector2 SizeRange = new Vector2() { x = 0.5f, y = 1.3f };
 
     // Private field to store the fish's material
     private Material fishMaterial;
