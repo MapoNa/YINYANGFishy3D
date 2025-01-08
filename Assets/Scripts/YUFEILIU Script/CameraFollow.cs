@@ -2,21 +2,21 @@ using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
 {
-    public Transform player;  // Íæ¼Ò£¨Óã£©µÄTransform
-    public Vector3 offset = new Vector3(0, 4, -2); // ÉãÏñ»úÆ«ÒÆÁ¿
-    public float smoothSpeed = 0.3f; // Æ½»¬ËÙ¶È
+    public Transform player;  // ï¿½ï¿½Ò£ï¿½ï¿½ã£©ï¿½ï¿½Transform
+    public Vector3 offset = new Vector3(0, 4, -2); // ï¿½ï¿½ï¿½ï¿½ï¿½Æ«ï¿½ï¿½ï¿½ï¿½
+    public float smoothSpeed = 0.3f; // Æ½ï¿½ï¿½ï¿½Ù¶ï¿½
 
     void FixedUpdate()
     {
         if (player != null)
         {
-            // Ä¿±êÎ»ÖÃ
+            // Ä¿ï¿½ï¿½Î»ï¿½ï¿½
             Vector3 desiredPosition = player.position + offset;
 
-            // Æ½»¬¸úËæÎ»ÖÃ
+            // Æ½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½
             transform.position = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed * Time.fixedDeltaTime);
 
-            // Æ½»¬Ðý×ªµ½Íæ¼Ò·½Ïò
+            // Æ½ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½Ò·ï¿½ï¿½ï¿½
             Quaternion targetRotation = Quaternion.LookRotation(player.position - transform.position);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, smoothSpeed * Time.fixedDeltaTime);
         }

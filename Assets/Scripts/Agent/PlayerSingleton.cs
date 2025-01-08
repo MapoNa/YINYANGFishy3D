@@ -7,7 +7,7 @@ public class PlayerSingleton : MonoBehaviour
 {
     private static PlayerSingleton instance; // Static instance of the PlayerSingleton class
     public bool IsAlive = true; // Flag to check if the player is alive
-    public event Action OnRespawn; // Event that is triggered when the player respawns
+    public static event Action OnRespawn; // Event that is triggered when the player respawns
     private FishController fishController; // Reference to the FishController component
     public float RespawnTime = 3f; // Time it takes for the player to respawn
     public GameObject DeadUI; // Reference to the UI object that is displayed when the player dies
@@ -20,20 +20,13 @@ public class PlayerSingleton : MonoBehaviour
             {
                 // Check if an instance of the PlayerSingleton class already exists
                 instance = FindObjectOfType<PlayerSingleton>();
-
-                if (instance == null)
-                {
-                    // If no instance exists, create a new game object and add the PlayerSingleton component to it
-                    GameObject playerObject = new GameObject("Player");
-                    instance = playerObject.AddComponent<PlayerSingleton>();
-                }
             }
 
             return instance;
         }
     }
 
-    private void Awake()
+    private void Start()
     {
         // If no instance exists or this is the first instance, set the instance to this object
         instance = this;
