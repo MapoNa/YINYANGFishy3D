@@ -20,6 +20,12 @@ public class EnemyFishSpawnManager : MonoBehaviour
         Agent.OnEaten += OnEaten;
     }
 
+    private void OnDisable()
+    {
+        // Unsubscribe from the OnEaten event of the Agent class
+        Agent.OnEaten -= OnEaten;
+    }
+
     private void Update()
     {
         // Increment the spawn timer by the time elapsed since the last frame

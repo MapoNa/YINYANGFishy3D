@@ -78,27 +78,22 @@ public class FishController : MonoBehaviour
         HandleFishJump();
         //rb.AddForce(new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")) * MoveSpeed);
         //rb.velocity = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")) * MoveSpeed;
-       
     }
 
 
-  
     /// </summary>
     public void UpdateFishColor()
     {
-        
         if (Mathf.Abs(yinYangValue) >= 1f)
         {
-          
             Color currentBaseColor = Color.Lerp(yangColor, yinColor, (yinYangValue + 1f) / 2f);
 
-         
+
             float t = Mathf.PingPong(Time.time * flashSpeed, 1f);
             fishMaterial.color = Color.Lerp(currentBaseColor, Color.red, t);
         }
         else
         {
-         
             Color currentColor = Color.Lerp(yangColor, yinColor, (yinYangValue + 1f) / 2f);
             fishMaterial.color = currentColor;
         }
@@ -110,7 +105,6 @@ public class FishController : MonoBehaviour
         originalSpeed = speed;
         if (mainLight == null)
         {
-            
             mainLight = FindObjectOfType<Light>();
             if (mainLight == null)
             {
@@ -127,7 +121,6 @@ public class FishController : MonoBehaviour
     }
 
     /// <summary>
-    
     /// </summary>
     private void EnterIsEatingState()
     {
@@ -137,7 +130,6 @@ public class FishController : MonoBehaviour
             StartCoroutine(EatCooldown());
         }
     }
- 
 
 
     void DetectShadow()
@@ -145,7 +137,7 @@ public class FishController : MonoBehaviour
         Vector3 lightDirection = -mainLight.transform.forward;
         Ray ray = new Ray(transform.position, lightDirection);
 
-       
+
         if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, shadowCastingLayers))
         {
             if (hit.collider.gameObject.layer != LayerMask.NameToLayer("FishModel"))
@@ -166,10 +158,10 @@ public class FishController : MonoBehaviour
     {
         if (isEating)
         {
-            isEating = false; 
+            isEating = false;
             var coliders = Physics.OverlapSphere(transform.position, 1f);
 
-            GameObject closestItem = null; 
+            GameObject closestItem = null;
             float closestDistance = float.MaxValue;
 
             foreach (Collider obj in coliders)
@@ -179,7 +171,7 @@ public class FishController : MonoBehaviour
                     Debug.Log("Eating " + obj.name);
                     float distance = Vector3.Distance(transform.position, obj.transform.position);
 
-                   
+
                     if (distance < closestDistance)
                     {
                         closestDistance = distance;
@@ -188,12 +180,11 @@ public class FishController : MonoBehaviour
                 }
             }
 
-           
+
             if (closestItem != null)
             {
                 if (closestItem.CompareTag("Collectible"))
                 {
-                   
                     Destroy(closestItem);
                     CollectedItemCount++;
                     Debug.Log($"CollectedItemCount: {CollectedItemCount}");
@@ -203,13 +194,12 @@ public class FishController : MonoBehaviour
                     Seaweed seaweed = closestItem.GetComponent<Seaweed>();
                     if (seaweed != null)
                     {
-                        
                         if (seaweed.isRegrowing)
                         {
                             return;
                         }
 
-                       
+
                         seaweed.OnEaten();
 
                         UpdateYinYang(seaweed.yinYangEffect);
@@ -220,10 +210,10 @@ public class FishController : MonoBehaviour
                     {
                         closestItem.transform.localScale *= foodShrinkFactor;
 
-                   
+
                         transform.localScale += Vector3.one * growthFactor;
 
-                      
+
                         if (closestItem.transform.localScale.x < 0.1f)
                         {
                             Destroy(closestItem);
@@ -235,65 +225,57 @@ public class FishController : MonoBehaviour
     }
 
 
- 
     private void UpdateYinYang(float effect)
     {
-        yinYangValue += effect; 
-        yinYangValue = Mathf.Clamp(yinYangValue, -1f, 1f); 
+        yinYangValue += effect;
+        yinYangValue = Mathf.Clamp(yinYangValue, -1f, 1f);
     }
 
     private void CheckAndMoveRedBall()
     {
         if (isEating && transform.localScale.x > 0.75f)
         {
-            
             GameObject[] redBalls = GameObject.FindGameObjectsWithTag("RedBall");
 
             foreach (GameObject redBall in redBalls)
             {
                 float distance = Vector3.Distance(transform.position, redBall.transform.position);
 
-                
-                if (distance < 0.5f) 
+
+                if (distance < 0.5f)
                 {
-                   
                     Collider redBallCollider = redBall.GetComponent<Collider>();
                     if (redBallCollider != null)
                     {
                         redBallCollider.enabled = false;
                     }
 
-               
+
                     redBall.transform.position = EatPoint.transform.position;
 
-                 
-                    if (Door1 != null) 
+
+                    if (Door1 != null)
                     {
                         float parentDistance = Vector3.Distance(Door1.transform.position, redBall.transform.position);
 
-                        if (parentDistance > maxDistance) 
+                        if (parentDistance > maxDistance)
                         {
-                            
-
                             Rigidbody doorRb = Door1.GetComponent<Rigidbody>();
                             if (doorRb != null)
                             {
-                                
                                 Vector3 pullDirection =
                                     (EatPoint.transform.position - Door1.transform.position).normalized;
-                                doorRb.AddForce(pullDirection * 30f, ForceMode.Force); 
+                                doorRb.AddForce(pullDirection * 30f, ForceMode.Force);
                             }
                             else
                             {
-                                
                             }
                         }
 
-                       
+
                         float playerDistance = Vector3.Distance(Door1Point.transform.position, transform.position);
                         if (playerDistance > maxDistance)
                         {
-
                             Vector3 restrictedPosition = Door1Point.transform.position +
                                                          (transform.position - Door1Point.transform.position)
                                                         .normalized *
@@ -333,13 +315,11 @@ public class FishController : MonoBehaviour
 
     void HandleShrink()
     {
-      
         if (Mathf.Abs(yinYangValue) >= 1f)
         {
-            
             Vector3 currentScale = transform.localScale;
 
-           
+
             if (currentScale.x > minScale || currentScale.y > minScale || currentScale.z > minScale)
             {
                 transform.localScale = Vector3.Lerp(
@@ -366,7 +346,7 @@ public class FishController : MonoBehaviour
 
         HandleShrink();
         float normalizedValue = Mathf.InverseLerp(-1f, 1f, yinYangValue);
-        yinYangSlider.value = normalizedValue; 
+        yinYangSlider.value = normalizedValue;
         UpdateFishColor();
         //FixedUpdate();      
         //HandleMovement();
@@ -383,7 +363,7 @@ public class FishController : MonoBehaviour
         }
 
 
-        if (Input.GetMouseButton(0)) 
+        if (Input.GetMouseButton(0))
         {
             EnterIsEatingState();
         }
@@ -391,7 +371,10 @@ public class FishController : MonoBehaviour
         if (Input.GetMouseButtonUp(0))
         {
             TriggerEatFood();
-            EatAudioSource.PlayOneShot(EatAudioSource.clip);
+            if (Time.timeScale > 0.1f)
+            {
+                EatAudioSource.PlayOneShot(EatAudioSource.clip);
+            }
         }
 
         if (isEating == true)
@@ -407,26 +390,22 @@ public class FishController : MonoBehaviour
 
         if (KeepY == true)
         {
-            
             Vector3 position = transform.position;
-            position.y = -1f; 
+            position.y = -1f;
             transform.position = position;
         }
     }
 
     private void HandleMovement()
     {
-      
         Vector3 moveInput = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
 
         if (moveInput.magnitude > 0)
         {
-            
             Vector3 moveDirection = moveInput.normalized;
 
             if (!isBlocked)
             {
-          
                 rb.velocity = new Vector3(moveDirection.x * speed, rb.velocity.y, moveDirection.z * speed);
             }
             else
@@ -434,18 +413,16 @@ public class FishController : MonoBehaviour
                 rb.velocity = new Vector3(0, rb.velocity.y, 0);
             }
 
-           
+
             Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
             rb.rotation = Quaternion.Slerp(rb.rotation, targetRotation, rotationSpeed * Time.fixedDeltaTime);
         }
         else
         {
-           
             rb.velocity = new Vector3(0, rb.velocity.y, 0);
             rb.angularVelocity = Vector3.zero;
         }
     }
-
 
 
     private void OnTriggerEnter(Collider other)
@@ -473,22 +450,22 @@ public class FishController : MonoBehaviour
     {
         if (splashEffect == null) return;
 
-        
+
         splashEffect.transform.position = transform.position;
 
-      
+
         if (isJumping && transform.position.y > -1)
         {
-            if (!splashEffect.isPlaying) 
+            if (!splashEffect.isPlaying)
             {
                 Debug.Log("Fish above water during jump, splash starts!");
                 splashEffect.Play();
             }
         }
-  
+
         else if (transform.position.y <= -1 || isDiving)
         {
-            if (splashEffect.isPlaying) 
+            if (splashEffect.isPlaying)
             {
                 Debug.Log("Fish at or below water level, splash stops!");
                 splashEffect.Stop();
@@ -558,6 +535,7 @@ public class FishController : MonoBehaviour
             currentJumpSpeed -= gravity * Time.deltaTime;
             yield return null;
         }
+
         transform.position = new Vector3(transform.position.x, targetHeight, transform.position.z);
 
         float currentFallSpeed = 0f;
