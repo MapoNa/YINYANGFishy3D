@@ -33728,7 +33728,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c81d10554b5349e49b6ae76e8a6badba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  YinYangEffect: 0.1
+  YinYangEffect: 0.2
   Speed: 1
   TurnSpeed: 360
   MinTurnInterval: 1

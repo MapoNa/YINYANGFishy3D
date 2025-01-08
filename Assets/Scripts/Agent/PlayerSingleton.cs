@@ -35,23 +35,14 @@ public class PlayerSingleton : MonoBehaviour
 
     private void Awake()
     {
-        if (instance != null && instance != this)
-        {
-            // If an instance of the PlayerSingleton class already exists and it is not this instance, destroy the current game object
-            Destroy(gameObject);
-        }
-        else
-        {
-            // If no instance exists or this is the first instance, set the instance to this object
-            instance = this;
-        }
-
-        fishController = GetComponent<FishController>(); // Get the FishController component
+        // If no instance exists or this is the first instance, set the instance to this object
+        instance = this;
     }
 
     public void CheckPlayerAlive()
     {
         if (IsAlive) return; // If the player is already alive, do nothing
+        fishController = GetComponent<FishController>(); // Get the FishController component
         StartCoroutine(RespawnPlayer()); // Start the coroutine to respawn the player
     }
 

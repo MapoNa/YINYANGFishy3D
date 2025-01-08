@@ -8,6 +8,7 @@ public class Saizi : MonoBehaviour
 {
     //get the rigidbody
     public Rigidbody ConnectBody;
+
     // get the rope
     public Rope RopePrefab;
 
@@ -19,7 +20,7 @@ public class Saizi : MonoBehaviour
             //get the saizi bot
             var saiziBot = other.gameObject.transform.parent.GetComponent<SaiziBot>();
             //connect the saizi bot
-            ConnectBody.position = saiziBot.transform.position;
+            ConnectBody.MovePosition(saiziBot.transform.position);
             saiziBot.Joint.connectedBody = ConnectBody;
             RopePrefab.EndPoint = saiziBot.transform;
         }

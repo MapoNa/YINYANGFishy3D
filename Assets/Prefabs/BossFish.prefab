@@ -5674,6 +5674,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -3125578227060138544, guid: 6d2fdb312bb481b449a91577e289b98a, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 6d2fdb312bb481b449a91577e289b98a, type: 3}
       propertyPath: m_Name
       value: BossFish

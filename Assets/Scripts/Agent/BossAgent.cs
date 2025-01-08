@@ -166,6 +166,8 @@ public class BossAgent : Agent
 
     private void OnTriggerEnter(Collider other)
     {
+        // Kill the agent's rigidbody dotween animation
+        DOTween.Kill(rb);
         // Check if the collided object has the Pillar component
         if (other.GetComponent<Pillar>())
         {
@@ -174,8 +176,6 @@ public class BossAgent : Agent
             ShieldMaterial.gameObject.SetActive(false);
             ShieldImage.gameObject.SetActive(false);
             other.gameObject.SetActive(false);
-            // Kill the agent's rigidbody dotween animation
-            DOTween.Kill(rb);
         }
 
         // Check if the collided object has the FishController component
