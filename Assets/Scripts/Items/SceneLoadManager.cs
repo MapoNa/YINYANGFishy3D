@@ -6,13 +6,13 @@ public class SceneLoadManager : MonoBehaviour
 {
     public void LoadGame()
     {
-        foreach (GameObject rootObject in UnityEngine.SceneManagement.SceneManager.GetActiveScene().GetRootGameObjects())
-        {
-            if (rootObject.name != "Main Camera") 
-            {
-                Destroy(rootObject);
-            }
-        }
+        // foreach (GameObject rootObject in UnityEngine.SceneManagement.SceneManager.GetActiveScene().GetRootGameObjects())
+        // {
+        //     if (rootObject.name != "Main Camera") 
+        //     {
+        //         Destroy(rootObject);
+        //     }
+        // }
 
         UnityEngine.SceneManagement.SceneManager.LoadScene("GamePlay");
         Time.timeScale = 1f;
