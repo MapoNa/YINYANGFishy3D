@@ -41,7 +41,7 @@ public class FishController : MonoBehaviour
     public GameObject EatPoint; // Point where food is grabbed
     public GameObject Door1; // Reference to the interactable door
     public GameObject Door1Point; // Reference to the door's interaction point
-
+    public AudioSource Eat;
     public float defaultYPosition = -1f; // Default Y position of the fish
     public float diveYPosition = -1.5f; // Target Y position when diving
     public float jumpYPosition = 3f; // Target Y position when jumping
@@ -62,13 +62,14 @@ public class FishController : MonoBehaviour
     public float eatCooldown = 0.3f; // Cooldown between eating actions
     public string foodTag = "FishFood"; // Tag for food objects
 
-    public float shrinkSpeed = 0.001f; // Rate at which the fish shrinks
+    public float shrinkSpeed = 0.000006f; // Rate at which the fish shrinks
     public float minScale = 0.5f; // Minimum scale of the fish
 
     public bool isEating = false; // Whether the fish is currently eating
     private bool canEat = true; // Whether the fish can eat (used for cooldown)
 
     public AudioSource EatAudioSource; // Audio source for eating sounds
+    public AudioSource JumpSound; // Audio source for Jump sounds
 
     private void FixedUpdate()
     {
@@ -159,7 +160,7 @@ public class FishController : MonoBehaviour
         if (isEating)
         {
             isEating = false;
-            var coliders = Physics.OverlapSphere(transform.position, 1f);
+            var coliders = Physics.OverlapSphere(transform.position, 0.3f);
 
             GameObject closestItem = null;
             float closestDistance = float.MaxValue;
@@ -231,6 +232,8 @@ public class FishController : MonoBehaviour
         yinYangValue = Mathf.Clamp(yinYangValue, -1f, 1f);
     }
 
+    private bool hasPlayedEatSound = false; // Track if the Eat sound has played
+
     private void CheckAndMoveRedBall()
     {
         if (isEating && transform.localScale.x > 0.75f)
@@ -241,18 +244,22 @@ public class FishController : MonoBehaviour
             {
                 float distance = Vector3.Distance(transform.position, redBall.transform.position);
 
-
                 if (distance < 0.5f)
                 {
+                    // Play the Eat sound only if it hasn't played yet
+                    if (!hasPlayedEatSound)
+                    {
+                        Eat.Play();
+                        hasPlayedEatSound = true; // Mark as played
+                    }
+
                     Collider redBallCollider = redBall.GetComponent<Collider>();
                     if (redBallCollider != null)
                     {
                         redBallCollider.enabled = false;
                     }
 
-
                     redBall.transform.position = EatPoint.transform.position;
-
 
                     if (Door1 != null)
                     {
@@ -267,11 +274,7 @@ public class FishController : MonoBehaviour
                                     (EatPoint.transform.position - Door1.transform.position).normalized;
                                 doorRb.AddForce(pullDirection * 30f, ForceMode.Force);
                             }
-                            else
-                            {
-                            }
                         }
-
 
                         float playerDistance = Vector3.Distance(Door1Point.transform.position, transform.position);
                         if (playerDistance > maxDistance)
@@ -290,6 +293,9 @@ public class FishController : MonoBehaviour
         }
         else
         {
+            // Reset the Eat sound flag when not eating
+            hasPlayedEatSound = false;
+
             GameObject[] redBalls = GameObject.FindGameObjectsWithTag("RedBall");
 
             foreach (GameObject redBall in redBalls)
@@ -304,6 +310,7 @@ public class FishController : MonoBehaviour
     }
 
 
+
     /// <summary>
     /// </summary>
     private IEnumerator EatCooldown()
@@ -313,23 +320,22 @@ public class FishController : MonoBehaviour
         canEat = true;
     }
 
+
+
     void HandleShrink()
     {
         if (Mathf.Abs(yinYangValue) >= 1f)
         {
-            Vector3 currentScale = transform.localScale;
-
-
-            if (currentScale.x > minScale || currentScale.y > minScale || currentScale.z > minScale)
-            {
-                transform.localScale = Vector3.Lerp(
-                                                    currentScale,
-                                                    new Vector3(minScale, minScale, minScale),
-                                                    shrinkSpeed * Time.deltaTime
-                                                   );
-            }
+            Vector3 targetScale = new Vector3(minScale, minScale, minScale);
+            transform.localScale = Vector3.MoveTowards(
+                transform.localScale,
+                targetScale,
+                shrinkSpeed * Time.unscaledDeltaTime // Control by speed
+            );
         }
     }
+
+
 
     void Update()
     {
@@ -352,15 +358,18 @@ public class FishController : MonoBehaviour
         //HandleMovement();
 
         DetectShadow();
-        if (isInShadow == true && yinYangValue < 1)
+        float changeRate = 0.1f; 
+
+        if (isInShadow && yinYangValue < 1)
         {
-            yinYangValue += 0.0004f;
+            yinYangValue += changeRate * Time.deltaTime;
         }
 
-        if (isInShadow == false && yinYangValue > -1)
+        if (!isInShadow && yinYangValue > -1)
         {
-            yinYangValue -= 0.0004f;
+            yinYangValue -= changeRate * Time.deltaTime;
         }
+
 
 
         if (Input.GetMouseButton(0))
@@ -526,6 +535,7 @@ public class FishController : MonoBehaviour
 
     private IEnumerator Jump(float targetHeight)
     {
+        JumpSound.Play();
         float startY = transform.position.y;
 
         while (transform.position.y < targetHeight && currentJumpSpeed > 0)

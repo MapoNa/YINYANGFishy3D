@@ -1,16 +1,16 @@
- using UnityEngine;
+using UnityEngine;
 
 public class ShadowDetection : MonoBehaviour
 {
-    public Light mainLight; // 场景中的主光源
-    public LayerMask shadowCastingLayers; // 用于检测阴影的图层
-    public bool isInShadow = false; // 当前是否在阴影中
+    public Light mainLight; // The main light source in the scene
+    public LayerMask shadowCastingLayers; // Layers to check for shadow casting objects
+    public bool isInShadow = false; // Indicates whether the object is in shadow
 
     void Start()
     {
         if (mainLight == null)
         {
-            // 自动查找主光源
+            // Automatically find the main light source
             mainLight = FindObjectOfType<Light>();
             if (mainLight == null)
             {
@@ -27,19 +27,19 @@ public class ShadowDetection : MonoBehaviour
 
     void DetectShadow()
     {
-        // 获取光源方向
+        // Get the direction of the light
         Vector3 lightDirection = -mainLight.transform.forward;
 
-        // 从物体位置沿光源方向投射射线
+        // Cast a ray from the object's position in the direction of the light
         Ray ray = new Ray(transform.position, lightDirection);
         if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, shadowCastingLayers))
         {
-            // 如果射线命中其他物体，说明在阴影中
+            // If the ray hits another object, the object is in shadow
             isInShadow = true;
         }
         else
         {
-            // 没有遮挡物，则不在阴影中
+            // If no object blocks the ray, the object is not in shadow
             isInShadow = false;
         }
 

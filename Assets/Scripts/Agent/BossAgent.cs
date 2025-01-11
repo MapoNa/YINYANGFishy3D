@@ -35,6 +35,9 @@ public class BossAgent : Agent
     public GameObject KeyPrefab; // Prefab for the key object
     public Wall WallPrefab; // Prefab for the wall object
 
+    public AudioSource HitWall;
+    public AudioSource Bark;
+
     private void Start()
     {
         // Initialize the animator and distance checker components
@@ -79,6 +82,7 @@ public class BossAgent : Agent
 
     public IEnumerator Attack()
     {
+        Bark.Play();
         // Perform the attack animation by moving towards the player
         AttackCollider.enabled = true;
         var endPos = PlayerSingleton.Instance.transform.position;
@@ -152,7 +156,7 @@ public class BossAgent : Agent
     public bool DetectedPlayer()
     {
         // Check if the wall prefab exists
-        if (WallPrefab) return false;
+        if (WallPrefab)  return false; 
         // Check if the distance from the player is less than the detect player distance
         if (distanceChecker.DistanceFromPlayer() < DetectPlayerDistance)
         {
@@ -171,6 +175,7 @@ public class BossAgent : Agent
         // Check if the collided object has the Pillar component
         if (other.GetComponent<Pillar>())
         {
+            HitWall.Play();
             // Decrease the shield point, disable the shield material and image, and disable the collided object
             ShieldPoint--;
             ShieldMaterial.gameObject.SetActive(false);
@@ -181,6 +186,7 @@ public class BossAgent : Agent
         // Check if the collided object has the FishController component
         if (other.GetComponent<FishController>())
         {
+            other.GetComponent<FishController>().isEating = false;
             // Set the player's IsAlive property to false and call the CheckPlayerAlive() method
             PlayerSingleton.Instance.IsAlive = false;
             PlayerSingleton.Instance.CheckPlayerAlive();

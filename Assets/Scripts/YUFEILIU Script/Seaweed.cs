@@ -3,37 +3,37 @@ using UnityEngine;
 
 public class Seaweed : MonoBehaviour
 {
-    public float growthRate = 0.1f;         // Ã¿ÃëÔö³¤µÄ±ÈÀý
-    public float growthDuration = 10f;     // Ë®²Ý´Ó 0 ³¤µ½³õÊ¼Ìå»ýËùÐèµÄÊ±¼ä
-    public float eatShrinkFactor = 0.2f;   // Ã¿´Î±»³ÔµôºóËõÐ¡µÄ±ÈÀý
-    public float minScale = 0.1f;          // ×îÐ¡Ìå»ý£¬µÍÓÚ´ËÖµ»á±»Ïú»Ù
-    public float nutritionValue = 0.05f;   // ³ÔµôË®²ÝÊ±Ôö¼ÓµÄÓªÑøÖµ
-    public float yinYangEffect = 0.1f;     // ÒõÑôÖµµÄÔö¼õÁ¿£¨ÕýÊýÔö¼ÓÑô£¬¸ºÊýÔö¼ÓÒõ£©
+    public float growthRate = 0.1f;         // Growth rate per second
+    public float growthDuration = 10f;     // Time required for the seaweed to fully regrow
+    public float eatShrinkFactor = 0.2f;   // Shrink factor applied when eaten
+    public float minScale = 0.1f;          // Minimum scale before the seaweed is destroyed
+    public float nutritionValue = 0.05f;   // Nutrition value added when the seaweed is eaten
+    public float yinYangEffect = 0.1f;     // Effect on YinYang value (positive increases Yang, negative increases Yin)
 
-    private Vector3 initialScale;          // ³õÊ¼Ìå»ý
-    public bool isRegrowing = false;      // Ë®²ÝÊÇ·ñÕýÔÚÖØÉú
+    private Vector3 initialScale;          // Initial scale of the seaweed
+    public bool isRegrowing = false;       // Whether the seaweed is currently regrowing
 
     private void Start()
     {
-        initialScale = transform.localScale; // ¼ÇÂ¼Ë®²Ý³õÊ¼Ìå»ý
+        initialScale = transform.localScale; // Record the initial scale of the seaweed
     }
 
     private void Update()
     {
         if (isRegrowing)
         {
-            Regrow(); // ÔÚÖØÉúÊ±Éú³¤
+            Regrow(); // Regrow the seaweed during the regrowth phase
         }
     }
 
     public void OnEaten()
     {
-        if (isRegrowing) return; // Èç¹ûÕýÔÚÖØÉú£¬²»´¦Àí
+        if (isRegrowing) return; // Skip if the seaweed is already regrowing
 
-        // ËõÐ¡Ë®²ÝÌå»ý
+        // Shrink the seaweed's scale
         transform.localScale -= initialScale * eatShrinkFactor;
 
-        // Èç¹ûË®²ÝÌå»ý¹ýÐ¡£¬´¥·¢ÖØÉú
+        // Trigger regrowth if the seaweed's scale becomes too small
         if (transform.localScale.x < initialScale.x * minScale)
         {
             StartCoroutine(StartRegrowth());
@@ -43,15 +43,15 @@ public class Seaweed : MonoBehaviour
     private IEnumerator StartRegrowth()
     {
         isRegrowing = true;
-        transform.localScale = Vector3.zero; // ½«Ìå»ýÖØÖÃÎª 0
-        yield return new WaitForSeconds(growthDuration); // µÈ´ýÖØÉúÊ±¼ä
+        transform.localScale = Vector3.zero; // Reset scale to zero
+        yield return new WaitForSeconds(growthDuration); // Wait for the regrowth duration
         isRegrowing = false;
-        transform.localScale = initialScale; // »Ö¸´³õÊ¼Ìå»ý
+        transform.localScale = initialScale; // Restore the initial scale
     }
 
     private void Regrow()
     {
-        // °´±ÈÀýÉú³¤£¬Ö±µ½»Ö¸´³õÊ¼Ìå»ý
+        // Gradually regrow the seaweed towards its initial scale
         transform.localScale = Vector3.Lerp(transform.localScale, initialScale, growthRate * Time.deltaTime);
     }
 }

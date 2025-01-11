@@ -19,7 +19,7 @@ public class ChuanTouTest : MonoBehaviour
 
     private void FixedUpdate()
     {
-        // 调用移动方法
+        
         Move(speed);
     }
 

@@ -5,16 +5,16 @@ using UnityEngine;
 public class SetInteraction : MonoBehaviour
 {
     [SerializeField]
-    RenderTexture rt; // 用于保存渲染纹理
+    RenderTexture rt; // Render texture to save the rendered output
     [SerializeField]
-    Transform target; // 玩家物体
+    Transform target; // Target player object
 
     [SerializeField]
-    Vector3 offset = new Vector3(0, 10, -10); // 摄像机与玩家的偏移量
+    Vector3 offset = new Vector3(0, 10, -10); // Offset between the camera and the player
 
     void Awake()
     {
-        // 设置全局 Shader 属性
+        // Set global Shader properties
         Shader.SetGlobalTexture("_RenderTexture", rt);
         Shader.SetGlobalFloat("_OrthographicSize", GetComponent<Camera>().orthographicSize);
     }
@@ -23,11 +23,11 @@ public class SetInteraction : MonoBehaviour
     {
         if (target != null)
         {
-            // 追踪玩家位置并保持偏移
+            // Track the player's position and maintain the offset
             transform.position = target.position + offset;
         }
 
-        // 更新 Shader 全局属性
+        // Update global Shader properties
         Shader.SetGlobalTexture("_RenderTexture", rt);
         Shader.SetGlobalFloat("_OrthographicSize", GetComponent<Camera>().orthographicSize);
         Shader.SetGlobalVector("_Position", transform.position);

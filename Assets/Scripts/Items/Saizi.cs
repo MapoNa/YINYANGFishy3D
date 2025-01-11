@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class Saizi : MonoBehaviour
 {
+    public AudioSource SuccessSound;
     //get the rigidbody
     public Rigidbody ConnectBody;
 
@@ -17,6 +18,7 @@ public class Saizi : MonoBehaviour
         //check if the object that entered the trigger is a SaiziBot
         if (other.gameObject.transform.parent.GetComponent<SaiziBot>())
         {
+            SuccessSound.Play();
             //get the saizi bot
             var saiziBot = other.gameObject.transform.parent.GetComponent<SaiziBot>();
             //connect the saizi bot

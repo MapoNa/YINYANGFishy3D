@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class RopeEndPointController : MonoBehaviour
 {
-    public Transform startPoint; // 绳子的起始点
-    public float maxDistance = 2f; // 最大允许的距离
+    public Transform startPoint; // The starting point of the rope
+    public float maxDistance = 2f; // The maximum allowed distance between the start and end points
 
     void Update()
     {
@@ -13,10 +13,10 @@ public class RopeEndPointController : MonoBehaviour
             return;
         }
 
-        // 计算当前与起始点的距离
+        // Calculate the current distance between the end point and the start point
         float currentDistance = Vector3.Distance(transform.position, startPoint.position);
 
-        // 如果距离超过最大值，将结束点拉回到最大距离范围内
+        // If the distance exceeds the maximum allowed value, pull the end point back within the limit
         if (currentDistance > maxDistance)
         {
             Vector3 direction = (transform.position - startPoint.position).normalized;

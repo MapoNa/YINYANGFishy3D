@@ -41,24 +41,24 @@ Shader "Unlit/FishS"
             {
                 v2f o;
                 
-                // 先初始化 o.vertex
+
                 o.vertex = UnityObjectToClipPos(v.vertex);
 
-                // 计算偏移量
+
                 float4 offset = float4(0.0, 0.0, 0.0, 0.0);
                 offset.y = _SinMaxValue * sin(_Frequency * _Time.y + v.vertex.x*_Size);
 
-                // 应用偏移到顶点位置
+
                 o.vertex = UnityObjectToClipPos(v.vertex + offset);
 
-                // 设置 UV
+              
                 o.uv = TRANSFORM_TEX(v.uv, _MainTex);
                 return o;
             }
 
             fixed4 frag (v2f i) : SV_Target
             {
-                // 采样纹理并返回颜色
+                
                 fixed4 col = tex2D(_MainTex, i.uv);
                 return col;
             }

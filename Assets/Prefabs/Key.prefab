@@ -28,8 +28,8 @@ Transform:
   m_GameObject: {fileID: 797580640358454380}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -3.25, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: -1.967, z: 0}
+  m_LocalScale: {x: 1, y: 0.23234, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 3872580022802688702}
@@ -96,7 +96,7 @@ HingeJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0, y: -0.49999976, z: 0}
+  m_ConnectedAnchor: {x: 0, y: -0.50012773, z: 0}
   serializedVersion: 2
   m_UseSpring: 1
   m_Spring:
@@ -151,8 +151,8 @@ Transform:
   m_GameObject: {fileID: 3298127320951513833}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -1.75, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: -1.036, z: 0}
+  m_LocalScale: {x: 1, y: 0.23234, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 3872580022802688702}
@@ -219,7 +219,7 @@ HingeJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0, y: -0.4999994, z: 0}
+  m_ConnectedAnchor: {x: 0, y: -0.49969855, z: 0}
   serializedVersion: 2
   m_UseSpring: 1
   m_Spring:
@@ -274,8 +274,8 @@ Transform:
   m_GameObject: {fileID: 4893538278066451765}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.75, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: -2.0934, z: 0}
+  m_LocalScale: {x: 1, y: 0.23234, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 3872580022802688702}
@@ -342,7 +342,7 @@ HingeJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0, y: -0.75, z: 0}
+  m_ConnectedAnchor: {x: 0, y: -2.0934, z: 0}
   serializedVersion: 2
   m_UseSpring: 1
   m_Spring:
@@ -397,8 +397,8 @@ Transform:
   m_GameObject: {fileID: 4981162867773099522}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -1.2500007, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: -0.689, z: 0}
+  m_LocalScale: {x: 1, y: 0.23234, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 3872580022802688702}
@@ -465,7 +465,7 @@ HingeJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0, y: -0.5000007, z: 0}
+  m_ConnectedAnchor: {x: 0, y: 7.1795645, z: 0}
   serializedVersion: 2
   m_UseSpring: 1
   m_Spring:
@@ -520,8 +520,8 @@ Transform:
   m_GameObject: {fileID: 6046384667635699542}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -2.25, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: -1.4120001, z: 0}
+  m_LocalScale: {x: 1, y: 0.23234, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 3872580022802688702}
@@ -588,7 +588,7 @@ HingeJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0, y: -0.49999952, z: 0}
+  m_ConnectedAnchor: {x: 0, y: -0.5001288, z: 0}
   serializedVersion: 2
   m_UseSpring: 1
   m_Spring:
@@ -645,8 +645,8 @@ Transform:
   m_GameObject: {fileID: 7501367082874696209}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -0, y: -0.9, z: 0}
+  m_LocalScale: {x: 1, y: 0.23234, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3872580022802688702}
@@ -745,16 +745,16 @@ LineRenderer:
   m_SortingOrder: 0
   m_Positions:
   - {x: -30.074411, y: -1.02, z: -21}
-  - {x: -30.074413, y: -1.1700001, z: -21}
-  - {x: -30.074413, y: -1.32, z: -21.000002}
-  - {x: -30.074411, y: -1.4699999, z: -21}
-  - {x: -30.074413, y: -1.62, z: -21.000002}
-  - {x: -30.074411, y: -1.77, z: -21}
-  - {x: -30.074413, y: -1.9200001, z: -21}
-  - {x: -30.074411, y: -2.0700002, z: -21}
-  - {x: -30.074413, y: -2.22, z: -21}
-  - {x: -30.07441, y: -2.37, z: -21}
-  - {x: -30.074411, y: -2.52, z: -21}
+  - {x: -30.074413, y: -1.06623, z: -21}
+  - {x: -30.074413, y: -1.11246, z: -21.000002}
+  - {x: -30.074411, y: -1.15869, z: -21}
+  - {x: -30.074413, y: -1.20492, z: -21.000002}
+  - {x: -30.074411, y: -1.25115, z: -21}
+  - {x: -30.074413, y: -1.29738, z: -21}
+  - {x: -30.074411, y: -1.34361, z: -21}
+  - {x: -30.074413, y: -1.3898401, z: -21}
+  - {x: -30.07441, y: -1.4360701, z: -21}
+  - {x: -30.074411, y: -1.4823, z: -21}
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 1
@@ -841,7 +841,7 @@ MonoBehaviour:
   linePoints: 10
   stiffness: 350
   damping: 12.72
-  ropeLength: 1
+  ropeLength: 0.08
   ropeWidth: 0.1
   midPointWeight: 1
   midPointPosition: 0.5
@@ -890,8 +890,8 @@ Transform:
   m_GameObject: {fileID: 7598724670833917526}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -2.75, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: -1.782, z: 0}
+  m_LocalScale: {x: 1, y: 0.23234, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 3872580022802688702}
@@ -958,7 +958,7 @@ HingeJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0, y: -0.5, z: 0}
+  m_ConnectedAnchor: {x: 0, y: -0.50012904, z: 0}
   serializedVersion: 2
   m_UseSpring: 1
   m_Spring:
@@ -1166,7 +1166,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 11f61eac024335a41af91493cb6f0538, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -5
+      value: -1.541
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 11f61eac024335a41af91493cb6f0538, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1259,7 +1259,7 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 16
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -1304,7 +1304,7 @@ HingeJoint:
   m_Anchor: {x: 0, y: 0.29, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0, y: -0.29999995, z: 0}
+  m_ConnectedAnchor: {x: 0, y: -6.4990964, z: 0}
   serializedVersion: 2
   m_UseSpring: 1
   m_Spring:
